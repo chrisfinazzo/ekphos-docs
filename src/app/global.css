@@ -5,6 +5,50 @@
 :root {
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
+  /* Light theme colors */
+  --background: 250 250 250;
+  --foreground: 24 24 24;
+  --muted: 240 240 240;
+  --muted-foreground: 100 100 100;
+  --popover: 255 255 255;
+  --popover-foreground: 24 24 24;
+  --card: 255 255 255;
+  --card-foreground: 24 24 24;
+  --border: 228 228 228;
+  --input: 228 228 228;
+  --primary: 79 121 205;
+  --primary-foreground: 255 255 255;
+  --secondary: 245 245 245;
+  --secondary-foreground: 24 24 24;
+  --accent: 79 121 205;
+  --accent-foreground: 255 255 255;
+  --ring: 79 121 205;
+
+  --fd-background: 250 250 250;
+  --fd-foreground: 24 24 24;
+  --fd-card: 255 255 255;
+  --fd-card-foreground: 24 24 24;
+  --fd-secondary: 245 245 245;
+  --fd-secondary-foreground: 24 24 24;
+  --fd-muted: 240 240 240;
+  --fd-muted-foreground: 100 100 100;
+  --fd-border: 228 228 228;
+  --fd-primary: 79 121 205;
+  --fd-primary-foreground: 255 255 255;
+  --fd-accent: 245 245 245;
+  --fd-accent-foreground: 24 24 24;
+  --fd-ring: 79 121 205;
+
+  /* Light theme component colors */
+  --code-bg: 245 245 245;
+  --code-inline-bg: 240 240 240;
+  --code-inline-color: 64 128 64;
+  --sidebar-bg: 250 250 250;
+  --nav-bg: 250 250 250;
+  --nav-bg-alpha: rgba(250, 250, 250, 0.9);
+}
+
+.dark {
   --background: 10 10 10;
   --foreground: 224 224 224;
   --muted: 112 112 112;
@@ -37,28 +81,36 @@
   --fd-accent: 30 30 30;
   --fd-accent-foreground: 224 224 224;
   --fd-ring: 122 162 247;
+
+  /* Dark theme component colors */
+  --code-bg: 20 20 20;
+  --code-inline-bg: 30 30 30;
+  --code-inline-color: 158 206 106;
+  --sidebar-bg: 10 10 10;
+  --nav-bg: 10 10 10;
+  --nav-bg-alpha: rgba(10, 10, 10, 0.9);
 }
 
-.light, :root {
-  color-scheme: dark;
+:root {
+  color-scheme: light;
 }
 
-html {
+.dark {
   color-scheme: dark;
 }
 
 body {
   font-family: var(--font-mono);
-  background: #0a0a0a;
-  color: #e0e0e0;
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
 }
 
 /* Code blocks - single clean background */
 figure.shiki,
 figure[class*="shiki"],
 figure:has(pre) {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--code-bg)) !important;
+  border-color: rgb(var(--border)) !important;
   box-shadow: none !important;
 }
 
@@ -72,7 +124,7 @@ figure pre {
 }
 
 pre {
-  background: #141414 !important;
+  background: rgb(var(--code-bg)) !important;
   box-shadow: none !important;
 }
 
@@ -84,8 +136,8 @@ pre code span {
 
 /* Inline code */
 :not(pre) > code {
-  background: #1e1e1e !important;
-  color: #9ece6a !important;
+  background: rgb(var(--code-inline-bg)) !important;
+  color: rgb(var(--code-inline-color)) !important;
   padding: 0.15rem 0.4rem !important;
   border-radius: 0.25rem !important;
   font-size: 0.875em !important;
@@ -95,44 +147,44 @@ pre code span {
 
 /* Sidebar */
 [data-sidebar] {
-  background: #0a0a0a !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--sidebar-bg)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Nav */
 nav {
-  background: rgba(10, 10, 10, 0.9) !important;
+  background: var(--nav-bg-alpha) !important;
   backdrop-filter: blur(12px);
-  border-color: #2a2a2a !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Cards */
 .fd-card, [data-card] {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--card)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Links */
 a:not([class]) {
-  color: #7aa2f7;
+  color: rgb(var(--primary));
 }
 
 a:not([class]):hover {
-  color: #9cb8ff;
+  color: rgb(var(--accent));
 }
 
 /* Tables */
 table {
-  border-color: #2a2a2a !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 th {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--code-bg)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 td {
-  border-color: #2a2a2a !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Scrollbar */
@@ -146,66 +198,66 @@ td {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: rgb(var(--border));
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: rgb(var(--muted-foreground));
 }
 
 /* Search dialog */
 [data-dialog] {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--card)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* TOC */
 [data-toc] a {
-  color: #707070;
+  color: rgb(var(--muted-foreground));
 }
 
 [data-toc] a:hover,
 [data-toc] a[data-active] {
-  color: #7aa2f7;
+  color: rgb(var(--primary));
 }
 
 /* Callouts */
 .fd-callout {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--card)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Tabs */
 [role="tablist"] {
-  border-color: #2a2a2a !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 [role="tab"][data-state="active"] {
-  color: #7aa2f7 !important;
-  border-color: #7aa2f7 !important;
+  color: rgb(var(--primary)) !important;
+  border-color: rgb(var(--primary)) !important;
 }
 
 /* Steps */
 .fd-steps {
-  border-color: #2a2a2a !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 .fd-step::before {
-  background: #7aa2f7 !important;
+  background: rgb(var(--primary)) !important;
 }
 
 /* Files */
 .fd-files {
-  background: #141414 !important;
-  border-color: #2a2a2a !important;
+  background: rgb(var(--card)) !important;
+  border-color: rgb(var(--border)) !important;
 }
 
 /* Copy button */
 button[aria-label*="Copy"] {
-  color: #707070 !important;
+  color: rgb(var(--muted-foreground)) !important;
 }
 
 button[aria-label*="Copy"]:hover {
-  color: #7aa2f7 !important;
+  color: rgb(var(--primary)) !important;
 }
