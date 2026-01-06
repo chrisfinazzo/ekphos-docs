@@ -12,16 +12,32 @@ Ekphos supports standard markdown plus wiki links and other enhancements.
 All six heading levels are supported with distinct styling:
 
 ```markdown
-# Heading 1    ◆ blue, bold, uppercase
-## Heading 2   ■ green, bold
-### Heading 3  ▸ yellow, bold
+# Heading 1    ▼/▶ blue, bold, uppercase (foldable)
+## Heading 2   ▼/▶ green, bold (foldable)
+### Heading 3  ▼/▶ yellow, bold (foldable)
 #### Heading 4 › magenta, bold
 ##### Heading 5   teal, bold
 ###### Heading 6  subtle, italic
 ```
 
+### Heading Folding
+
+H1-H3 headings can be folded to collapse their content, creating a cleaner workspace for long documents.
+
+**Fold indicators**:
+- `▼` Expanded (children visible)
+- `▶` Folded (children hidden)
+
+**Keybindings in Content View**:
+- `Space` or click to toggle fold on a heading
+- `za` vim-style toggle fold
+- `zM` fold all headings
+- `zR` unfold all headings
+
+When folded, all content until the next heading of equal or higher level is hidden.
+
 <Callout>
-Only H1-H3 appear in the outline panel for navigation.
+Only H1-H3 appear in the outline panel for navigation and support folding.
 </Callout>
 
 ## Text Formatting
@@ -29,6 +45,7 @@ Only H1-H3 appear in the outline panel for navigation.
 ```markdown
 **bold text**
 *italic text*
+~~strikethrough~~
 `inline code`
 > blockquote
 ```
@@ -57,9 +74,21 @@ Only H1-H3 appear in the outline panel for navigation.
 ```markdown
 - [ ] Unchecked task
 - [x] Completed task
+- [ ] Task with [[wiki link]]
+- [ ] Task with [markdown link](https://example.com)
+- [ ] Task with ![image](screenshot.png)
+- [ ] Task with !![text-only image](diagram.png)
 ```
 
-Tasks are interactive - press `Space` in content view to toggle.
+Tasks are interactive - press `Space` in content view to toggle the checkbox.
+
+**Tasks with links**: When a task contains links (wikilinks, markdown links, or images), use `]` / `[` to navigate between the checkbox and links. `Space` toggles the checkbox when it's selected, or opens the link when a link is selected.
+
+**Smart image rendering**:
+- **Standalone images** (`![](path)` on its own line): Render at full content width with border
+- **Inline images** (in lists, tasks, or with other text): Render as compact thumbnails below the text
+
+All images can be opened with `Space` or `Enter` when selected.
 
 ## Links
 
@@ -78,13 +107,33 @@ Obsidian-style linking between notes:
 ```markdown
 [[note name]]
 [[folder/nested note]]
+[[note name|display text]]
+[[note name#heading]]
+[[note name#heading|display text]]
 ```
+
+**Syntax**:
+
+| Format | Description |
+|--------|-------------|
+| `[[note]]` | Basic link to note |
+| `[[note\|alias]]` | Link with custom display text |
+| `[[note#heading]]` | Link to specific heading in note |
+| `[[note#heading\|alias]]` | Heading link with custom display text |
 
 **Features**:
 - Valid links shown in cyan
 - Invalid links shown in red
 - Type `[[` in edit mode for autocomplete
 - Creates non-existent notes on navigation
+- Aliases display the custom text instead of note name
+- Heading links navigate to the specified section
+
+**Recursive Search**:
+
+Wiki links use recursive search to find notes in any subdirectory, similar to Obsidian. `[[note]]` will find a note named "note" even if it's located in a nested folder like `folder/subfolder/note.md`. Root-level notes are matched first for backwards compatibility.
+
+The autocomplete popup shows the note title with a subtle folder path hint below for nested notes, making it easy to identify where each note is located while keeping wikilinks clean and simple.
 
 ## Code Blocks
 
@@ -118,7 +167,7 @@ Tables render with proper borders and header styling.
 ## Images
 
 ```markdown
-![Alt text](path/to/image.png)
+![Alt text](image.png)
 ![Remote](https://example.com/image.jpg)
 ```
 
@@ -127,7 +176,21 @@ Tables render with proper borders and header styling.
 **Features**:
 - Local and remote URLs
 - Inline preview in compatible terminals
-- Press `Enter` or `o` to open in system viewer
+- Click, press `Enter`, or `o` to open in system viewer
+
+### Supported Path Types
+
+| Path Type | Example | Description |
+|-----------|---------|-------------|
+| Relative | `![](image.png)` | Resolved relative to the current note's directory |
+| Relative with ./ | `![](./assets/img.png)` | Explicit relative path |
+| Home directory | `![](~/Pictures/photo.jpg)` | Expands `~` to user's home directory |
+| Absolute | `![](/Users/name/img.png)` | Full filesystem path |
+| Remote URL | `![](https://example.com/img.jpg)` | HTTP/HTTPS URLs |
+
+<Callout>
+Relative paths are resolved from the markdown file's location, not the current working directory.
+</Callout>
 
 ### Compatible Terminals
 
@@ -137,6 +200,26 @@ For inline image preview:
 - WezTerm
 - Ghostty
 - Sixel-enabled terminals
+
+### Text-only Image Links
+
+Use double-bang syntax `!![]()` to display an image as a text link without preview:
+
+```markdown
+!![Alt text](image.png)
+!![](screenshot.png)
+```
+
+**Behavior**:
+- Displays as plain text (alt text or path) instead of image preview
+- No thumbnail rendering in lists or tasks
+- Still navigable with `]` / `[`
+- Still openable with `Space` or `Enter`
+
+**Use cases**:
+- Reference images without cluttering the view
+- Link to images in terminals without image support
+- Keep notes compact while preserving image links
 
 ## Collapsible Sections
 

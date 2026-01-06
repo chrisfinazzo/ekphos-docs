@@ -43,6 +43,9 @@ sidebar_collapsed = false
 
 # Start with outline collapsed
 outline_collapsed = false
+
+# Group folders at the top of sidebar (like Obsidian)
+folders_first = true
 ```
 
 ### Options Reference
@@ -56,6 +59,7 @@ outline_collapsed = false
 | `syntax_theme` | string | `base16-ocean.dark` | Code highlighting theme |
 | `sidebar_collapsed` | bool | `false` | Start with sidebar collapsed |
 | `outline_collapsed` | bool | `false` | Start with outline collapsed |
+| `folders_first` | bool | `true` | Group folders at top of sidebar |
 
 ## Editor Settings
 
@@ -72,6 +76,12 @@ left_padding = 0
 
 # Right padding (columns)
 right_padding = 1
+
+# Line number display mode
+line_numbers = "absolute"
+
+# Minimum lines to keep above/below cursor
+scrolloff = 8
 ```
 
 | Option | Type | Default | Description |
@@ -80,6 +90,34 @@ right_padding = 1
 | `tab_width` | u16 | `4` | Tab display width |
 | `left_padding` | u16 | `0` | Left editor padding |
 | `right_padding` | u16 | `1` | Right editor padding |
+| `line_numbers` | string | `"absolute"` | Line number display mode |
+| `scrolloff` | u8 | `0` | Minimum lines above/below cursor |
+
+### Line Number Modes
+
+| Mode | Description |
+|------|-------------|
+| `"none"` | No line numbers |
+| `"absolute"` | Standard line numbers (1, 2, 3, ...) - default |
+| `"relative"` | Relative to cursor position (current line shows 0) |
+| `"hybrid"` | Current line shows absolute, others show relative |
+
+<Callout>
+Hybrid mode is useful for vim users who frequently use relative motions like `5j` or `10k` while still seeing the actual line number at the cursor.
+</Callout>
+
+### Scrolloff
+
+The `scrolloff` option (similar to Vim's `set scrolloff`) keeps a minimum number of lines visible above and below the cursor when scrolling. This provides context and prevents the cursor from sticking to the very edge of the editor.
+
+```toml
+[editor]
+scrolloff = 8  # Always keep 8 lines of context
+```
+
+<Callout>
+Setting `scrolloff` to a high value (like half your screen height) effectively keeps the cursor centered while scrolling.
+</Callout>
 
 ## Syntax Themes
 
@@ -122,12 +160,15 @@ show_empty_dir = false
 syntax_theme = "base16-mocha.dark"
 sidebar_collapsed = false
 outline_collapsed = false
+folders_first = true
 
 [editor]
 line_wrap = true
 tab_width = 2
 left_padding = 1
 right_padding = 1
+line_numbers = "hybrid"
+scrolloff = 8
 ```
 
 ## Reload Configuration

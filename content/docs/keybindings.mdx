@@ -22,9 +22,26 @@ Ekphos uses vim-style keybindings throughout. Press `?` to view the help dialog.
 | `Ctrl+o` | Toggle outline |
 | `Ctrl+f` | Find in buffer (search current note) |
 | `Ctrl+g` | Open graph view |
-| `z` | Toggle zen mode (hide both panels) |
+| `Ctrl+z` | Toggle zen mode (hide both panels) |
 | `R` | Reload files |
 | `Ctrl+Shift+R` | Reload config and theme |
+
+### Navigation History
+
+Navigate between previously visited notes, similar to browser back/forward:
+
+| Key | Action |
+|-----|--------|
+| `-` | Go back to previous note |
+| `=` | Go forward to next note |
+
+<Callout>
+Navigation history is recorded when you:
+- Click or press Enter on a note in the sidebar
+- Press `e` to edit a note
+- Follow a WikiLink
+- Open a note from the graph view
+</Callout>
 
 ## Sidebar
 
@@ -37,22 +54,79 @@ Ekphos uses vim-style keybindings throughout. Press `?` to view the help dialog.
 | `d` | Delete |
 | `e` | Edit note |
 | `/` | Search notes |
+| `s` | Cycle sort mode |
+
+### Sort Modes
+
+Press `s` to cycle through sorting options. The current mode is displayed in the sidebar header (e.g., `Notes (5) [A→Z]`).
+
+| Mode | Label | Description |
+|------|-------|-------------|
+| Name A→Z | `A→Z` | Alphabetical ascending |
+| Name Z→A | `Z→A` | Alphabetical descending |
+| Modified Oldest | `Mod↑` | Oldest modified first |
+| Modified Newest | `Mod↓` | Newest modified first |
+| Created Oldest | `Cre↑` | Oldest created first |
+| Created Newest | `Cre↓` | Newest created first |
+
+<Callout>
+Folders are always sorted first, then notes within each folder follow the selected sort order.
+</Callout>
 
 ## Content View
 
 | Key | Action |
 |-----|--------|
 | `j` / `k` | Scroll down/up |
+| `Ctrl+d` / `Ctrl+u` | Half page down/up |
 | `gg` | Go to top |
 | `G` | Go to bottom |
-| `Space` | Toggle task / Open link / Toggle details |
-| `]` / `[` | Next/previous link (multi-link lines) |
+| `Space` | Toggle task checkbox / Open link / Toggle details |
+| `]` / `[` | Navigate between links (and task checkbox) |
 | `Enter` / `o` | Open image in viewer |
 | `Shift+J` / `Shift+K` | Toggle floating cursor mode |
 
 <Callout>
 **Floating cursor mode**: Cursor moves freely within the visible area. The view only scrolls when reaching edges.
 </Callout>
+
+### Heading Folding
+
+Collapse and expand document sections based on markdown headings (H1-H3) for better navigation:
+
+| Key | Action |
+|-----|--------|
+| `Space` | Toggle fold on current heading |
+| `za` | Toggle fold on current heading (vim-style) |
+| `zM` | Fold all headings |
+| `zR` | Unfold all headings |
+| Click | Toggle fold when clicking on a heading |
+
+**Fold indicators**:
+- `▼` Expanded (children visible)
+- `▶` Folded (children hidden)
+
+When a heading is folded, all content until the next heading of equal or higher level is hidden. For example, folding an H2 hides everything until the next H2 or H1.
+
+<Callout>
+Only H1-H3 headings support folding, matching the outline panel. Navigating to a folded heading via the outline panel automatically unfolds it.
+</Callout>
+
+### Task Items with Links
+
+When a task item contains links (wikilinks, markdown links, or images), you can navigate between the checkbox and links:
+
+```
+- [ ] Check [[Project Notes]]
+- [ ] Review [documentation](https://docs.example.com)
+- [ ] See screenshot ![preview](image.png)
+```
+
+- `]` / `[` cycles between the checkbox and any links in the task
+- When the **checkbox is selected** (highlighted), pressing `Space` toggles the task
+- When a **link is selected**, pressing `Space` opens it (wikilink navigates, URL opens in browser, image opens in viewer)
+
+The currently selected element (checkbox or link) is highlighted with a yellow background.
 
 ## Edit Mode - Normal
 
@@ -202,6 +276,10 @@ Use with operators (`d`, `c`, `y`, `>`, `<`):
 - `yap` - Yank around paragraph
 - `>ip` - Indent paragraph
 
+<Callout>
+**Text Object Seeking**: For bracket text objects (`()`, `[]`, `{}`, `<>`), if the cursor is not inside brackets, ekphos will seek forward on the current line to find the next opening bracket. This means `ci(` works even when the cursor is before the parentheses.
+</Callout>
+
 ## Count Prefix
 
 Prefix any motion or operator with a number:
@@ -246,16 +324,82 @@ When the autocomplete popup is open:
 
 ## Edit Mode - Visual
 
+Ekphos supports three visual selection modes, matching vim's behavior:
+
+### Entering Visual Modes
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `v` | **VISUAL** | Character-wise selection |
+| `V` | **V-LINE** | Line-wise selection (selects entire lines) |
+| `Ctrl+v` | **V-BLOCK** | Block/rectangular selection |
+
+### Visual Mode (Character-wise)
+
+Press `v` to start character-wise selection. The selection extends from the anchor point to the cursor position, spanning across lines if needed.
+
+```
+Example: Selecting "world! How are" with v
+Hello, [world!
+How are] you?
+```
+
+### Visual Line Mode
+
+Press `V` to start line-wise selection. Entire lines are selected regardless of cursor column position.
+
+```
+Example: Selecting two lines with V
+[Hello, world!]
+[How are you?]
+```
+
+### Visual Block Mode
+
+Press `Ctrl+v` to start block/rectangular selection. Selects a rectangular region defined by the anchor and cursor positions. Each row only highlights the columns within the block boundaries.
+
+```
+Example: Selecting a column with Ctrl+v
+192.168.[33].0
+192.168.[22].0
+192.168.[66].0
+```
+
+<Callout>
+Visual Block mode is useful for selecting columns of text, such as IP address octets, table columns, or aligned data.
+</Callout>
+
+### Movement in Visual Modes
+
 | Key | Action |
 |-----|--------|
 | `h` / `j` / `k` / `l` | Extend selection |
 | `w` / `b` | Extend by word |
 | `0` / `$` | Extend to line start/end |
 | `gg` / `G` | Extend to file top/bottom |
-| `y` | Yank selection |
+
+### Actions in Visual Modes
+
+| Key | Action |
+|-----|--------|
+| `y` | Yank (copy) selection |
 | `d` / `x` | Delete selection |
 | `Esc` | Cancel selection |
 | `Ctrl+s` | Save and exit |
+
+## Edit Mode - Replace
+
+Press `R` in normal mode to enter Replace mode. Characters you type overwrite existing text instead of inserting.
+
+| Key | Action |
+|-----|--------|
+| Any character | Overwrite character at cursor and move right |
+| `Backspace` | Move cursor left (does not restore original) |
+| `Esc` | Exit to normal mode |
+
+<Callout>
+Replace mode is useful for fixing typos or overwriting specific text without changing the overall structure. At end of line, new characters are appended.
+</Callout>
 
 ## Mouse
 
