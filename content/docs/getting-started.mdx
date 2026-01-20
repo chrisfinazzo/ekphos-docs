@@ -13,7 +13,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
 Don't have Rust? Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` to install it.
 </Callout>
 
-<Tabs items={['Cargo', 'Make', 'Docker']}>
+<Tabs items={['Cargo', 'Homebrew', 'Make', 'Docker']}>
   <Tab value="Cargo">
     The recommended way to install ekphos:
 
@@ -29,6 +29,24 @@ Don't have Rust? Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs 
     To uninstall:
     ```bash
     cargo uninstall ekphos
+    ```
+  </Tab>
+
+  <Tab value="Homebrew">
+    An alternative way to install ekphos:
+
+    ```bash
+    brew install ekphos
+    ```
+
+    To update:
+    ```bash
+    brew upgrade ekphos
+    ```
+
+    To uninstall:
+    ```bash
+    brew uninstall ekphos
     ```
   </Tab>
 
