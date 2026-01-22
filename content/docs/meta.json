@@ -4,9 +4,11 @@
     "index",
     "getting-started",
     "keybindings",
+    "search",
     "graph-view",
     "configuration",
     "markdown",
+    "frontmatter",
     "themes"
   ]
 }

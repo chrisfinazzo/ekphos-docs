@@ -46,6 +46,12 @@ outline_collapsed = false
 
 # Group folders at the top of sidebar (like Obsidian)
 folders_first = true
+
+# Hide frontmatter in content view (show only tag badges)
+frontmatter_hidden = true
+
+# Show tag badges when note has frontmatter tags
+show_tags = true
 ```
 
 ### Options Reference
@@ -60,6 +66,8 @@ folders_first = true
 | `sidebar_collapsed` | bool | `false` | Start with sidebar collapsed |
 | `outline_collapsed` | bool | `false` | Start with outline collapsed |
 | `folders_first` | bool | `true` | Group folders at top of sidebar |
+| `frontmatter_hidden` | bool | `true` | Hide YAML frontmatter in content view |
+| `show_tags` | bool | `true` | Show tag badges from frontmatter |
 
 ## Editor Settings
 
@@ -144,7 +152,19 @@ ekphos ~/notes/todo.md
 
 # Reset configuration to defaults
 ekphos --reset
+
+# Clear search index cache
+ekphos --clean-cache
 ```
+
+| Option | Description |
+|--------|-------------|
+| `-h, --help` | Print help information |
+| `-v, --version` | Print version information |
+| `-c, --config` | Print config file path |
+| `-d, --dir` | Print notes directory path |
+| `--reset` | Reset config and themes to defaults |
+| `--clean-cache` | Clear the search index cache |
 
 <Callout type="warn">
 Use `ekphos --reset` after major updates if you experience issues. This resets config and themes to defaults.
@@ -161,6 +181,8 @@ syntax_theme = "base16-mocha.dark"
 sidebar_collapsed = false
 outline_collapsed = false
 folders_first = true
+frontmatter_hidden = true
+show_tags = true
 
 [editor]
 line_wrap = true

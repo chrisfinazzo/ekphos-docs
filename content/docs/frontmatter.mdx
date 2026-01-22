@@ -1,0 +1,164 @@
+---
+title: Frontmatter
+description: YAML frontmatter support for note metadata and tags
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Ekphos supports YAML frontmatter for storing metadata in your notes. Frontmatter is the content between `---` delimiters at the very beginning of a file.
+
+## Basic Format
+
+```markdown
+---
+title: My Note Title
+tags: [rust, cli, terminal]
+date: 2024-01-15
+author: Your Name
+---
+
+# Your Note Content
+
+Regular markdown content starts here...
+```
+
+## Supported Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Note title (optional) |
+| `tags` | array | List of tags for categorization |
+| `date` | string | Date associated with the note |
+| `author` | string | Note author |
+| *any* | any | Additional custom fields are preserved |
+
+## Tag Badges
+
+When a note has frontmatter with tags, they are displayed as visual badges at the top of the content view:
+
+```
+ rust   cli   terminal
+─────────────────────────
+# Your Note Content
+...
+```
+
+Tags are styled with the theme's `tag` and `tag_background` colors.
+
+<Callout>
+Tag badges only appear when `show_tags = true` in your config (enabled by default).
+</Callout>
+
+## Frontmatter Visibility
+
+By default, the raw frontmatter YAML is hidden in the content view to keep your notes clean. Only the tag badges are shown.
+
+### Toggle Visibility
+
+Press `Ctrl+m` while in the Content panel to toggle frontmatter visibility:
+
+- **Hidden (default)**: Only tag badges shown, frontmatter lines hidden
+- **Visible**: Full frontmatter displayed with syntax highlighting
+
+When visible, frontmatter is rendered with:
+- `---` delimiters in muted color
+- Keys in info color (blue)
+- Values in frontmatter color (muted)
+
+<Callout>
+In Edit mode, frontmatter is always visible as raw text for editing.
+</Callout>
+
+## Configuration
+
+Add these options to your `config.toml`:
+
+```toml title="config.toml"
+# Hide frontmatter in content view (default: true)
+frontmatter_hidden = true
+
+# Show tag badges when note has tags (default: true)
+show_tags = true
+```
+
+### Theme Colors
+
+Customize frontmatter and tag colors in your theme file:
+
+```toml title="themes/my-theme.toml"
+[ui.content]
+# Tag badge text color
+tag = "#bb9af7"
+
+# Tag badge background color
+tag_background = "#24243a"
+
+# Frontmatter key/value text color
+frontmatter = "#565f89"
+```
+
+## Tags Format
+
+Tags can be specified in YAML array format:
+
+```yaml
+# Inline array
+tags: [rust, cli, terminal]
+
+# Multi-line array
+tags:
+  - rust
+  - cli
+  - terminal
+```
+
+## Examples
+
+### Minimal Frontmatter
+
+```markdown
+---
+tags: [notes]
+---
+
+# Quick Note
+
+Just a simple note with one tag.
+```
+
+### Full Metadata
+
+```markdown
+---
+title: Project Documentation
+tags: [project, docs, important]
+date: 2024-01-15
+author: John Doe
+status: draft
+priority: high
+---
+
+# Project Documentation
+
+This note has extensive metadata...
+```
+
+### No Frontmatter
+
+Notes without frontmatter work normally - they simply won't display tag badges:
+
+```markdown
+# Regular Note
+
+No frontmatter here, just content.
+```
+
+## Keybindings
+
+| Key | Panel | Action |
+|-----|-------|--------|
+| `Ctrl+m` | Content | Toggle frontmatter visibility |
+
+<Callout type="warn">
+Invalid YAML frontmatter is silently ignored - the file will be treated as having no frontmatter. Make sure your YAML syntax is correct.
+</Callout>

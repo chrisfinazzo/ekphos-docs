@@ -3,113 +3,150 @@ title: Keybindings
 description: Complete keyboard reference for ekphos
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Callout } from "fumadocs-ui/components/callout";
 
 Ekphos uses vim-style keybindings throughout. Press `?` to view the help dialog.
 
 ## Global
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` | Navigate down/up |
-| `gg` | Go to first item |
-| `G` | Go to last item |
-| `Tab` | Next panel (Sidebar → Content → Outline) |
-| `Shift+Tab` | Previous panel |
-| `?` | Show help |
-| `q` | Quit |
-| `Ctrl+b` | Toggle sidebar |
-| `Ctrl+o` | Toggle outline |
-| `Ctrl+f` | Find in buffer (search current note) |
-| `Ctrl+g` | Open graph view |
-| `Ctrl+z` | Toggle zen mode (hide both panels) |
-| `R` | Reload files |
-| `Ctrl+Shift+R` | Reload config and theme |
+| Key                | Action                                        |
+| ------------------ | --------------------------------------------- |
+| `j` / `k`          | Navigate down/up                              |
+| `gg`               | Go to first item                              |
+| `G`                | Go to last item                               |
+| `Tab` or `l`       | Next panel (Sidebar → Content → Outline)      |
+| `Shift+Tab` or `h` | Previous panel                                |
+| `?`                | Show help                                     |
+| `q`                | Quit                                          |
+| `Ctrl+b`           | Toggle sidebar                                |
+| `Ctrl+o`           | Toggle outline                                |
+| `Ctrl+k`           | Quick open (search files and content)         |
+| `Ctrl+f`           | Find in buffer (search current note)          |
+| `Ctrl+g`           | Open graph view                               |
+| `Ctrl+z`           | Toggle zen mode (hide both panels)            |
+| `Ctrl+m`           | Toggle frontmatter visibility (Content panel) |
+| `R`                | Reload files                                  |
+| `Ctrl+Shift+R`     | Reload config and theme                       |
 
 ### Navigation History
 
 Navigate between previously visited notes, similar to browser back/forward:
 
-| Key | Action |
-|-----|--------|
+| Key | Action                   |
+| --- | ------------------------ |
 | `-` | Go back to previous note |
-| `=` | Go forward to next note |
+| `=` | Go forward to next note  |
 
 <Callout>
-Navigation history is recorded when you:
-- Click or press Enter on a note in the sidebar
-- Press `e` to edit a note
-- Follow a WikiLink
-- Open a note from the graph view
+  Navigation history is recorded when you: - Click or press Enter on a note in
+  the sidebar - Press `e` to edit a note - Follow a WikiLink - Open a note from
+  the graph view
 </Callout>
 
 ## Sidebar
 
-| Key | Action |
-|-----|--------|
-| `n` | Create new note |
-| `N` | Create new folder |
+| Key     | Action                    |
+| ------- | ------------------------- |
+| `n`     | Create new note           |
+| `N`     | Create new folder         |
 | `Enter` | Open note / Toggle folder |
-| `r` | Rename |
-| `d` | Delete |
-| `e` | Edit note |
-| `/` | Search notes |
-| `s` | Cycle sort mode |
+| `r`     | Rename                    |
+| `d`     | Delete                    |
+| `x`     | Cut (for move)            |
+| `p`     | Paste (move cut item)     |
+| `e`     | Edit note                 |
+| `/`     | Search notes              |
+| `s`     | Cycle sort mode           |
+
+### Move/Relocate Files
+
+Move notes and folders using vim-style cut/paste:
+
+| Key   | Action                          |
+| ----- | ------------------------------- |
+| `x`   | Cut selected note or folder     |
+| `p`   | Paste (move) to current location|
+| `Esc` | Cancel cut operation            |
+
+**How to move a file:**
+
+1. Select the note or folder you want to move
+2. Press `x` to cut it (the item will appear dimmed/italic)
+3. Navigate to the destination folder
+4. Press `p` to paste (move the item there)
+
+<Callout>
+**Wiki Links Update Automatically**: When you move a note, ekphos automatically updates all wiki links (`[[note]]`) in your vault that reference the moved note. Links with headings (`[[note#section]]`) and aliases (`[[note|alias]]`) are preserved.
+</Callout>
+
+**Visual feedback:**
+- Cut items appear dimmed and italic in the sidebar
+- Status message shows "Cut: filename" when cutting
+- Status message shows "Moved: filename" after successful move
+
+**Error handling:**
+- Moving to the same location shows "Already in this location"
+- If a file with the same name exists at the destination, shows an error
+- Moving a folder into itself is prevented
 
 ### Sort Modes
 
 Press `s` to cycle through sorting options. The current mode is displayed in the sidebar header (e.g., `Notes (5) [A→Z]`).
 
-| Mode | Label | Description |
-|------|-------|-------------|
-| Name A→Z | `A→Z` | Alphabetical ascending |
-| Name Z→A | `Z→A` | Alphabetical descending |
-| Modified Oldest | `Mod↑` | Oldest modified first |
-| Modified Newest | `Mod↓` | Newest modified first |
-| Created Oldest | `Cre↑` | Oldest created first |
-| Created Newest | `Cre↓` | Newest created first |
+| Mode            | Label  | Description             |
+| --------------- | ------ | ----------------------- |
+| Name A→Z        | `A→Z`  | Alphabetical ascending  |
+| Name Z→A        | `Z→A`  | Alphabetical descending |
+| Modified Oldest | `Mod↑` | Oldest modified first   |
+| Modified Newest | `Mod↓` | Newest modified first   |
+| Created Oldest  | `Cre↑` | Oldest created first    |
+| Created Newest  | `Cre↓` | Newest created first    |
 
 <Callout>
-Folders are always sorted first, then notes within each folder follow the selected sort order.
+  Folders are always sorted first, then notes within each folder follow the
+  selected sort order.
 </Callout>
 
 ## Content View
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` | Scroll down/up |
-| `Ctrl+d` / `Ctrl+u` | Half page down/up |
-| `gg` | Go to top |
-| `G` | Go to bottom |
-| `Space` | Toggle task checkbox / Open link / Toggle details |
-| `]` / `[` | Navigate between links (and task checkbox) |
-| `Enter` / `o` | Open image in viewer |
-| `Shift+J` / `Shift+K` | Toggle floating cursor mode |
+| Key                   | Action                                            |
+| --------------------- | ------------------------------------------------- |
+| `j` / `k`             | Scroll down/up                                    |
+| `Ctrl+d` / `Ctrl+u`   | Half page down/up                                 |
+| `gg`                  | Go to top                                         |
+| `G`                   | Go to bottom                                      |
+| `Space`               | Toggle task checkbox / Open link / Toggle details |
+| `]` / `[`             | Navigate between links (and task checkbox)        |
+| `Enter` / `o`         | Open image in viewer                              |
+| `Shift+J` / `Shift+K` | Toggle floating cursor mode                       |
 
 <Callout>
-**Floating cursor mode**: Cursor moves freely within the visible area. The view only scrolls when reaching edges.
+  **Floating cursor mode**: Cursor moves freely within the visible area. The
+  view only scrolls when reaching edges.
 </Callout>
 
 ### Heading Folding
 
 Collapse and expand document sections based on markdown headings (H1-H3) for better navigation:
 
-| Key | Action |
-|-----|--------|
-| `Space` | Toggle fold on current heading |
-| `za` | Toggle fold on current heading (vim-style) |
-| `zM` | Fold all headings |
-| `zR` | Unfold all headings |
-| Click | Toggle fold when clicking on a heading |
+| Key     | Action                                     |
+| ------- | ------------------------------------------ |
+| `Space` | Toggle fold on current heading             |
+| `za`    | Toggle fold on current heading (vim-style) |
+| `zM`    | Fold all headings                          |
+| `zR`    | Unfold all headings                        |
+| Click   | Toggle fold when clicking on a heading     |
 
 **Fold indicators**:
+
 - `▼` Expanded (children visible)
 - `▶` Folded (children hidden)
 
 When a heading is folded, all content until the next heading of equal or higher level is hidden. For example, folding an H2 hides everything until the next H2 or H1.
 
 <Callout>
-Only H1-H3 headings support folding, matching the outline panel. Navigating to a folded heading via the outline panel automatically unfolds it.
+  Only H1-H3 headings support folding, matching the outline panel. Navigating to
+  a folded heading via the outline panel automatically unfolds it.
 </Callout>
 
 ### Task Items with Links
@@ -132,145 +169,149 @@ The currently selected element (checkbox or link) is highlighted with a yellow b
 
 ### Mode Changes
 
-| Key | Action |
-|-----|--------|
-| `i` | Insert before cursor |
-| `a` | Insert after cursor |
-| `I` | Insert at first non-blank |
-| `A` | Insert at line end |
-| `o` | New line below |
-| `O` | New line above |
-| `v` | Visual mode |
-| `V` | Visual Line mode |
-| `Ctrl+v` | Visual Block mode |
-| `R` | Replace mode |
-| `:` | Command mode |
+| Key      | Action                    |
+| -------- | ------------------------- |
+| `i`      | Insert before cursor      |
+| `a`      | Insert after cursor       |
+| `I`      | Insert at first non-blank |
+| `A`      | Insert at line end        |
+| `o`      | New line below            |
+| `O`      | New line above            |
+| `v`      | Visual mode               |
+| `V`      | Visual Line mode          |
+| `Ctrl+v` | Visual Block mode         |
+| `R`      | Replace mode              |
+| `:`      | Command mode              |
 
 ### Movement
 
-| Key | Action |
-|-----|--------|
-| `h` / `l` | Move left/right |
-| `j` / `k` | Move down/up |
-| `w` / `W` | Word/WORD forward |
-| `b` / `B` | Word/WORD backward |
-| `e` / `E` | Word/WORD end forward |
-| `ge` / `gE` | Word/WORD end backward |
-| `0` | Line start |
-| `^` | First non-blank |
-| `$` | Line end |
-| `gg` | File top |
-| `G` / `{n}G` | File bottom / Go to line n |
-| `{` / `}` | Paragraph backward/forward |
-| `H` / `M` / `L` | Screen top/middle/bottom |
-| `%` | Matching bracket |
+| Key             | Action                     |
+| --------------- | -------------------------- |
+| `h` / `l`       | Move left/right            |
+| `j` / `k`       | Move down/up               |
+| `w` / `W`       | Word/WORD forward          |
+| `b` / `B`       | Word/WORD backward         |
+| `e` / `E`       | Word/WORD end forward      |
+| `ge` / `gE`     | Word/WORD end backward     |
+| `0`             | Line start                 |
+| `^`             | First non-blank            |
+| `$`             | Line end                   |
+| `gg`            | File top                   |
+| `G` / `{n}G`    | File bottom / Go to line n |
+| `{` / `}`       | Paragraph backward/forward |
+| `H` / `M` / `L` | Screen top/middle/bottom   |
+| `%`             | Matching bracket           |
 
 ### Find Character
 
-| Key | Action |
-|-----|--------|
-| `f{char}` | Find char forward |
-| `F{char}` | Find char backward |
-| `t{char}` | Till char forward |
-| `T{char}` | Till char backward |
-| `;` | Repeat find |
-| `,` | Repeat find (reverse) |
+| Key       | Action                |
+| --------- | --------------------- |
+| `f{char}` | Find char forward     |
+| `F{char}` | Find char backward    |
+| `t{char}` | Till char forward     |
+| `T{char}` | Till char backward    |
+| `;`       | Repeat find           |
+| `,`       | Repeat find (reverse) |
 
 ### Operators
 
-| Key | Action |
-|-----|--------|
-| `d{motion}` | Delete |
-| `c{motion}` | Change (delete + insert) |
-| `y{motion}` | Yank (copy) |
-| `>{motion}` | Indent |
-| `<{motion}` | Outdent |
-| `dd` / `cc` / `yy` | Operate on whole line |
-| `D` / `C` | Delete/change to end of line |
+| Key                | Action                       |
+| ------------------ | ---------------------------- |
+| `d{motion}`        | Delete                       |
+| `c{motion}`        | Change (delete + insert)     |
+| `y{motion}`        | Yank (copy)                  |
+| `>{motion}`        | Indent                       |
+| `<{motion}`        | Outdent                      |
+| `dd` / `cc` / `yy` | Operate on whole line        |
+| `D` / `C`          | Delete/change to end of line |
+| `Y`                | Yank line (from start to end)|
 
 ### Single Actions
 
-| Key | Action |
-|-----|--------|
-| `x` / `X` | Delete char forward/backward |
-| `s` | Substitute char (delete + insert) |
-| `S` | Substitute line |
-| `r{char}` | Replace char |
-| `J` | Join lines |
-| `p` / `P` | Paste after/before |
-| `u` | Undo |
-| `Ctrl+r` | Redo |
-| `.` | Repeat last command |
-| `~` | Toggle case |
+| Key       | Action                            |
+| --------- | --------------------------------- |
+| `x` / `X` | Delete char forward/backward      |
+| `s`       | Substitute char (delete + insert) |
+| `S`       | Substitute line                   |
+| `r{char}` | Replace char                      |
+| `J`       | Join lines                        |
+| `p` / `P` | Paste after/before                |
+| `u`       | Undo                              |
+| `Ctrl+r`  | Redo                              |
+| `.`       | Repeat last command               |
+| `~`       | Toggle case                       |
 
 ### Scrolling
 
-| Key | Action |
-|-----|--------|
-| `Ctrl+u` / `Ctrl+d` | Half page up/down |
-| `Ctrl+b` / `Ctrl+f` | Full page up/down |
-| `zz` / `zt` / `zb` | Center/top/bottom cursor |
+| Key                 | Action                   |
+| ------------------- | ------------------------ |
+| `Ctrl+u` / `Ctrl+d` | Half page up/down        |
+| `Ctrl+b` / `Ctrl+f` | Full page up/down        |
+| `zz` / `zt` / `zb`  | Center/top/bottom cursor |
 
 ### Macros
 
-| Key | Action |
-|-----|--------|
+| Key      | Action                            |
+| -------- | --------------------------------- |
 | `q{a-z}` | Start recording macro to register |
-| `q` | Stop recording |
-| `@{a-z}` | Play macro from register |
-| `@@` | Repeat last macro |
+| `q`      | Stop recording                    |
+| `@{a-z}` | Play macro from register          |
+| `@@`     | Repeat last macro                 |
 
 ### Marks
 
-| Key | Action |
-|-----|--------|
-| `m{a-zA-Z}` | Set mark at cursor position |
-| `` `{a-zA-Z} `` | Jump to mark (exact position) |
-| `'{a-zA-Z}` | Jump to mark (first non-blank) |
-| ``` `` ``` / `''` | Jump to last jump position |
-| `` `. `` / `'.` | Jump to last change position |
-| `` `^ `` / `'^` | Jump to last insert position |
+| Key             | Action                         |
+| --------------- | ------------------------------ |
+| `m{a-zA-Z}`     | Set mark at cursor position    |
+| `` `{a-zA-Z} `` | Jump to mark (exact position)  |
+| `'{a-zA-Z}`     | Jump to mark (first non-blank) |
+| ` `` ` / `''`   | Jump to last jump position     |
+| `` `. `` / `'.` | Jump to last change position   |
+| `` `^ `` / `'^` | Jump to last insert position   |
 
 ### Search
 
-| Key | Action |
-|-----|--------|
-| `/` | Search forward |
-| `?` | Search backward |
-| `n` | Next match (in search direction) |
+| Key | Action                              |
+| --- | ----------------------------------- |
+| `/` | Search forward                      |
+| `?` | Search backward                     |
+| `n` | Next match (in search direction)    |
 | `N` | Previous match (opposite direction) |
-| `*` | Search word under cursor forward |
-| `#` | Search word under cursor backward |
+| `*` | Search word under cursor forward    |
+| `#` | Search word under cursor backward   |
 
 <Callout>
-After searching with `/` or `?`, use `n` to continue in the same direction and `N` to go in the opposite direction. The search pattern is preserved until you start a new search.
+  After searching with `/` or `?`, use `n` to continue in the same direction and
+  `N` to go in the opposite direction. The search pattern is preserved until you
+  start a new search.
 </Callout>
 
 ### Other
 
-| Key | Action |
-|-----|--------|
-| `Ctrl+s` | Save and exit |
-| `Esc` | Cancel / Reset state |
+| Key      | Action               |
+| -------- | -------------------- |
+| `Ctrl+s` | Save and exit        |
+| `Esc`    | Cancel / Reset state |
 
 ## Text Objects
 
 Use with operators (`d`, `c`, `y`, `>`, `<`):
 
-| Text Object | Description |
-|-------------|-------------|
-| `iw` / `aw` | Inner/around word |
-| `iW` / `aW` | Inner/around WORD |
-| `i"` / `a"` | Inner/around double quotes |
-| `i'` / `a'` | Inner/around single quotes |
-| `` i` `` / `` a` `` | Inner/around backticks |
-| `i(` / `a(` / `ib` / `ab` | Inner/around parentheses |
-| `i[` / `a[` | Inner/around brackets |
-| `i{` / `a{` / `iB` / `aB` | Inner/around braces |
-| `i<` / `a<` | Inner/around angle brackets |
-| `ip` / `ap` | Inner/around paragraph |
+| Text Object               | Description                 |
+| ------------------------- | --------------------------- |
+| `iw` / `aw`               | Inner/around word           |
+| `iW` / `aW`               | Inner/around WORD           |
+| `i"` / `a"`               | Inner/around double quotes  |
+| `i'` / `a'`               | Inner/around single quotes  |
+| `` i` `` / `` a` ``       | Inner/around backticks      |
+| `i(` / `a(` / `ib` / `ab` | Inner/around parentheses    |
+| `i[` / `a[`               | Inner/around brackets       |
+| `i{` / `a{` / `iB` / `aB` | Inner/around braces         |
+| `i<` / `a<`               | Inner/around angle brackets |
+| `ip` / `ap`               | Inner/around paragraph      |
 
 **Examples:**
+
 - `diw` - Delete inner word
 - `ci"` - Change inside double quotes
 - `yap` - Yank around paragraph
@@ -283,6 +324,7 @@ Use with operators (`d`, `c`, `y`, `>`, `<`):
 ## Count Prefix
 
 Prefix any motion or operator with a number:
+
 - `5j` - Move down 5 lines
 - `3w` - Move forward 3 words
 - `2dd` - Delete 2 lines
@@ -292,35 +334,35 @@ Prefix any motion or operator with a number:
 
 Press `:` to enter command mode.
 
-| Command | Action |
-|---------|--------|
-| `:w` | Save |
-| `:q` | Quit (exit edit mode) |
-| `:wq` | Save and quit |
-| `:q!` | Quit without saving |
-| `:{n}` | Go to line n |
+| Command         | Action                     |
+| --------------- | -------------------------- |
+| `:w`            | Save                       |
+| `:q`            | Quit (exit edit mode)      |
+| `:wq`           | Save and quit              |
+| `:q!`           | Quit without saving        |
+| `:{n}`          | Go to line n               |
 | `:%s/pat/rep/g` | Substitute all occurrences |
 
 ## Edit Mode - Insert
 
-| Key | Action |
-|-----|--------|
-| `Esc` | Exit to normal mode |
-| `Ctrl+w` | Delete word backward |
-| `Ctrl+u` | Delete to line start |
-| `Ctrl+s` | Save and exit |
-| `[[` | Trigger wiki link autocomplete |
+| Key      | Action                         |
+| -------- | ------------------------------ |
+| `Esc`    | Exit to normal mode            |
+| `Ctrl+w` | Delete word backward           |
+| `Ctrl+u` | Delete to line start           |
+| `Ctrl+s` | Save and exit                  |
+| `[[`     | Trigger wiki link autocomplete |
 
 ### Wiki Link Autocomplete
 
 When the autocomplete popup is open:
 
-| Key | Action |
-|-----|--------|
-| `↑` / `↓` | Navigate suggestions |
-| `Enter` / `Tab` | Insert selected |
-| `Esc` | Close |
-| Type | Filter suggestions |
+| Key             | Action               |
+| --------------- | -------------------- |
+| `↑` / `↓`       | Navigate suggestions |
+| `Enter` / `Tab` | Insert selected      |
+| `Esc`           | Close                |
+| Type            | Filter suggestions   |
 
 ## Edit Mode - Visual
 
@@ -328,11 +370,11 @@ Ekphos supports three visual selection modes, matching vim's behavior:
 
 ### Entering Visual Modes
 
-| Key | Mode | Description |
-|-----|------|-------------|
-| `v` | **VISUAL** | Character-wise selection |
-| `V` | **V-LINE** | Line-wise selection (selects entire lines) |
-| `Ctrl+v` | **V-BLOCK** | Block/rectangular selection |
+| Key      | Mode        | Description                                |
+| -------- | ----------- | ------------------------------------------ |
+| `v`      | **VISUAL**  | Character-wise selection                   |
+| `V`      | **V-LINE**  | Line-wise selection (selects entire lines) |
+| `Ctrl+v` | **V-BLOCK** | Block/rectangular selection                |
 
 ### Visual Mode (Character-wise)
 
@@ -366,49 +408,51 @@ Example: Selecting a column with Ctrl+v
 ```
 
 <Callout>
-Visual Block mode is useful for selecting columns of text, such as IP address octets, table columns, or aligned data.
+  Visual Block mode is useful for selecting columns of text, such as IP address
+  octets, table columns, or aligned data.
 </Callout>
 
 ### Movement in Visual Modes
 
-| Key | Action |
-|-----|--------|
-| `h` / `j` / `k` / `l` | Extend selection |
-| `w` / `b` | Extend by word |
-| `0` / `$` | Extend to line start/end |
-| `gg` / `G` | Extend to file top/bottom |
+| Key                   | Action                    |
+| --------------------- | ------------------------- |
+| `h` / `j` / `k` / `l` | Extend selection          |
+| `w` / `b`             | Extend by word            |
+| `0` / `$`             | Extend to line start/end  |
+| `gg` / `G`            | Extend to file top/bottom |
 
 ### Actions in Visual Modes
 
-| Key | Action |
-|-----|--------|
-| `y` | Yank (copy) selection |
-| `d` / `x` | Delete selection |
-| `Esc` | Cancel selection |
-| `Ctrl+s` | Save and exit |
+| Key       | Action                |
+| --------- | --------------------- |
+| `y`       | Yank (copy) selection |
+| `d` / `x` | Delete selection      |
+| `Esc`     | Cancel selection      |
+| `Ctrl+s`  | Save and exit         |
 
 ## Edit Mode - Replace
 
 Press `R` in normal mode to enter Replace mode. Characters you type overwrite existing text instead of inserting.
 
-| Key | Action |
-|-----|--------|
+| Key           | Action                                       |
+| ------------- | -------------------------------------------- |
 | Any character | Overwrite character at cursor and move right |
-| `Backspace` | Move cursor left (does not restore original) |
-| `Esc` | Exit to normal mode |
+| `Backspace`   | Move cursor left (does not restore original) |
+| `Esc`         | Exit to normal mode                          |
 
 <Callout>
-Replace mode is useful for fixing typos or overwriting specific text without changing the overall structure. At end of line, new characters are appended.
+  Replace mode is useful for fixing typos or overwriting specific text without
+  changing the overall structure. At end of line, new characters are appended.
 </Callout>
 
 ## Mouse
 
-| Action | Result |
-|--------|--------|
-| Click | Position cursor |
-| Drag | Select text (enters visual mode) |
-| Right-click | Context menu |
-| Drag to edge | Auto-scroll |
+| Action       | Result                           |
+| ------------ | -------------------------------- |
+| Click        | Position cursor                  |
+| Drag         | Select text (enters visual mode) |
+| Right-click  | Context menu                     |
+| Drag to edge | Auto-scroll                      |
 
 **Context menu options**: Copy, Cut, Paste, Select All
 
@@ -416,15 +460,16 @@ Replace mode is useful for fixing typos or overwriting specific text without cha
 
 Press `/` in the sidebar to search notes by filename.
 
-| Key | Action |
-|-----|--------|
-| Type | Filter notes |
-| `↓` / `j` / `Ctrl+n` | Next match |
-| `↑` / `k` / `Ctrl+p` | Previous match |
-| `Enter` | Select and close |
-| `Esc` | Cancel |
+| Key                  | Action           |
+| -------------------- | ---------------- |
+| Type                 | Filter notes     |
+| `↓` / `j` / `Ctrl+n` | Next match       |
+| `↑` / `k` / `Ctrl+p` | Previous match   |
+| `Enter`              | Select and close |
+| `Esc`                | Cancel           |
 
 **Border colors**:
+
 - Yellow: Typing
 - Green: Matches found
 - Red: No matches
@@ -433,17 +478,18 @@ Press `/` in the sidebar to search notes by filename.
 
 Press `Ctrl+f` to search within the current note (works in both Normal and Edit modes). In Edit mode, you can also use vim-style `/` (forward) or `?` (backward) to start a search.
 
-| Key | Action |
-|-----|--------|
-| Type | Search text (live results) |
-| `↓` / `Tab` / `Enter` / `Ctrl+n` | Jump to next match |
-| `↑` / `Shift+Tab` / `Ctrl+p` | Jump to previous match |
-| `Ctrl+c` | Toggle case sensitivity |
-| `Esc` | Close search |
+| Key                              | Action                     |
+| -------------------------------- | -------------------------- |
+| Type                             | Search text (live results) |
+| `↓` / `Tab` / `Enter` / `Ctrl+n` | Jump to next match         |
+| `↑` / `Shift+Tab` / `Ctrl+p`     | Jump to previous match     |
+| `Ctrl+c`                         | Toggle case sensitivity    |
+| `Esc`                            | Close search               |
 
 After closing the search dialog, use `n` and `N` in Edit mode to continue navigating through matches.
 
 **Features**:
+
 - Search dialog appears in top-right corner
 - All matches are highlighted in the buffer
 - Current match has a distinct highlight color
@@ -451,24 +497,60 @@ After closing the search dialog, use `n` and `N` in Edit mode to continue naviga
 - Match counter shows progress (e.g., "3/15")
 
 **Border colors**:
+
 - Blue: Typing (no query yet)
 - Green: Matches found
 - Red: No matches
+
+## Quick Open
+
+Press `Ctrl+k` to open the quick open dialog. This provides two search modes:
+
+- **Files** - Search notes by title (fuzzy matching)
+- **Content** - Search within note contents (full-text search)
+
+### Navigation
+
+| Key                                        | Action                              |
+| ------------------------------------------ | ----------------------------------- |
+| `←` / `→`                                  | Switch between Files and Content    |
+| `↓` / `Tab` / `Ctrl+j` / `Ctrl+n`          | Next result                         |
+| `↑` / `Shift+Tab` / `Ctrl+k` / `Ctrl+p`    | Previous result                     |
+| `Enter`                                    | Open selected note                  |
+| `Esc`                                      | Close dialog                        |
+| Type                                       | Filter results                      |
+
+### Files Mode
+
+Searches note titles using fuzzy matching. Results show:
+- Note title
+- Folder path (if note is in a subdirectory)
+
+### Content Mode
+
+Searches within note contents. Results show:
+- Note title with line number (e.g., `:L42`)
+- Matched line with query highlighted
+
+Content search runs in the background to keep the UI responsive. A "Searching..." indicator appears while results are loading.
+
+<Callout>
+  When selecting a content search result, ekphos navigates to the note and scrolls to the matching line.
+</Callout>
 
 ## Dialogs
 
 ### Delete Confirmation
 
-| Key | Action |
-|-----|--------|
-| `y` / `Y` | Confirm |
-| `n` / `N` / `Esc` | Cancel |
+| Key               | Action  |
+| ----------------- | ------- |
+| `y` / `Y`         | Confirm |
+| `n` / `N` / `Esc` | Cancel  |
 
 ### Input Dialogs (Rename, Create)
 
-| Key | Action |
-|-----|--------|
-| `Enter` | Confirm |
-| `Esc` | Cancel |
+| Key         | Action           |
+| ----------- | ---------------- |
+| `Enter`     | Confirm          |
+| `Esc`       | Cancel           |
 | `Backspace` | Delete character |
-

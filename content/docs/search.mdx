@@ -1,0 +1,126 @@
+---
+title: Search
+description: Fast search across all your notes
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { File, Folder, Files } from "fumadocs-ui/components/files";
+import { Mermaid } from "@/components/mermaid";
+
+Search across all your notes by file name or content.
+
+## Quick Open
+
+Press `Ctrl+k` to open the search picker. You can search by:
+
+- **Files** - Search note titles and paths
+- **Content** - Full-text search across all note content
+
+Use `←` / `→` to switch between file and content search modes.
+
+| Key                              | Action                            |
+| -------------------------------- | --------------------------------- |
+| `Ctrl+k`                         | Open search picker                |
+| `←` / `→`                        | Toggle between Files/Content mode |
+| `Enter`                          | Open selected result              |
+| `Esc`                            | Close search                      |
+| `↑` / `↓` or `Tab` / `Shift+Tab` | Navigate results                  |
+
+## Search Index
+
+Ekphos builds a persistent search index in the background for fast full-text search. The index is:
+
+- **Persistent** - Saved to disk and loaded on startup
+- **Incremental** - Only re-indexes files that have changed
+- **Background** - Built without blocking the UI
+
+### How It Works
+
+<Mermaid
+  chart={`flowchart TD
+    A[App Launch] --> B[Load notes from disk]
+    B --> C{Cached index?}
+    C -->|No| D[Build full index]
+    C -->|Yes| E{Files changed?}
+    E -->|No| F[Use cached index]
+    E -->|Yes| G[Incremental update]`}
+/>
+
+## Cache Location
+
+The search index is stored in platform-specific cache directories:
+
+| Platform  | Location                   |
+| --------- | -------------------------- |
+| **macOS** | `~/Library/Caches/ekphos/` |
+| **Linux** | `~/.cache/ekphos/`         |
+
+<Files>
+  <Folder name="~/.cache/ekphos" defaultOpen>
+    <Folder name="{notes_dir_hash}" defaultOpen>
+      <File name="search_index.bin" />
+    </Folder>
+  </Folder>
+</Files>
+
+Each notes directory gets its own cache folder identified by an 8-character hash of the directory path.
+
+### Clearing the Cache
+
+To rebuild the search index from scratch, use the `--clean-cache` command:
+
+```bash
+ekphos --clean-cache
+```
+
+This removes all cached search indexes. The index will be automatically rebuilt on next launch.
+
+You can also manually delete the cache directory if needed:
+
+```bash
+# macOS
+rm -rf ~/Library/Caches/ekphos/
+
+# Linux
+rm -rf ~/.cache/ekphos/
+```
+
+## Sidebar Search
+
+Press `/` in the sidebar to filter notes by title. This is a quick filter that doesn't use the search index.
+
+| Key     | Action               |
+| ------- | -------------------- |
+| `/`     | Start sidebar search |
+| `Esc`   | Clear search         |
+| `Enter` | Open selected note   |
+
+## Find in Buffer
+
+Press `Ctrl+f` to search within the current note (similar to vim's `/` search).
+
+| Key      | Action              |
+| -------- | ------------------- |
+| `Ctrl+f` | Start buffer search |
+| `n`      | Next match          |
+| `N`      | Previous match      |
+| `Esc`    | Clear search        |
+
+<Callout>
+  Buffer search highlights all matches in the current note and allows jumping
+  between them with `n`/`N`.
+</Callout>
+
+## Search Tips
+
+- **Word search** - Single words match exactly indexed terms
+- **Phrase search** - Multi-word queries search for the exact phrase
+- **Case insensitive** - All searches are case-insensitive
+- **Partial matches** - Words starting with your query are also matched
+
+The search results are ranked by:
+
+1. Exact word matches (highest priority)
+2. Title matches (bonus score)
+3. Word boundary matches
+4. Position in line (start of line gets bonus)
