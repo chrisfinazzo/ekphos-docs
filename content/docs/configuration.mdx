@@ -3,8 +3,8 @@ title: Configuration
 description: Configure ekphos settings and options
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { Callout } from "fumadocs-ui/components/callout";
+import { File, Folder, Files } from "fumadocs-ui/components/files";
 
 Configuration is stored at `~/.config/ekphos/config.toml`. A default config is created on first run.
 
@@ -52,22 +52,50 @@ frontmatter_hidden = true
 
 # Show tag badges when note has frontmatter tags
 show_tags = true
+
+# Check for updates on startup
+check_updates = true
+
+# Enable transparent background (for terminal transparency)
+transparent_bg = false
 ```
 
 ### Options Reference
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `notes_dir` | string | `~/Documents/ekphos` | Notes storage directory |
-| `welcome_shown` | bool | `true` | Show welcome on startup |
-| `theme` | string | `ekphos-dawn` | Theme name |
-| `show_empty_dir` | bool | `true` | Show empty folders |
-| `syntax_theme` | string | `base16-ocean.dark` | Code highlighting theme |
-| `sidebar_collapsed` | bool | `false` | Start with sidebar collapsed |
-| `outline_collapsed` | bool | `false` | Start with outline collapsed |
-| `folders_first` | bool | `true` | Group folders at top of sidebar |
-| `frontmatter_hidden` | bool | `true` | Hide YAML frontmatter in content view |
-| `show_tags` | bool | `true` | Show tag badges from frontmatter |
+| Option               | Type   | Default              | Description                           |
+| -------------------- | ------ | -------------------- | ------------------------------------- |
+| `notes_dir`          | string | `~/Documents/ekphos` | Notes storage directory               |
+| `welcome_shown`      | bool   | `true`               | Show welcome on startup               |
+| `theme`              | string | `ekphos-dawn`        | Theme name                            |
+| `show_empty_dir`     | bool   | `true`               | Show empty folders                    |
+| `syntax_theme`       | string | `base16-ocean.dark`  | Code highlighting theme               |
+| `sidebar_collapsed`  | bool   | `false`              | Start with sidebar collapsed          |
+| `outline_collapsed`  | bool   | `false`              | Start with outline collapsed          |
+| `folders_first`      | bool   | `true`               | Group folders at top of sidebar       |
+| `frontmatter_hidden` | bool   | `true`               | Hide YAML frontmatter in content view |
+| `show_tags`          | bool   | `true`               | Show tag badges from frontmatter      |
+| `check_updates`      | bool   | `true`               | Check for updates on startup          |
+| `transparent_bg`     | bool   | `false`              | Enable transparent background         |
+
+### Updating ekphos
+
+When a new version is available, ekphos will prompt you on startup. To update:
+
+```bash
+# Cargo
+cargo install ekphos
+
+# Homebrew
+brew upgrade ekphos
+
+# AUR (Arch Linux)
+yay -S ekphos
+```
+
+<Callout>
+  View the changelog and release notes at [GitHub
+  Releases](https://github.com/hanebox/ekphos/releases).
+</Callout>
 
 ## Editor Settings
 
@@ -92,26 +120,27 @@ line_numbers = "absolute"
 scrolloff = 8
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `line_wrap` | bool | `true` | Soft line wrapping |
-| `tab_width` | u16 | `4` | Tab display width |
-| `left_padding` | u16 | `0` | Left editor padding |
-| `right_padding` | u16 | `1` | Right editor padding |
-| `line_numbers` | string | `"absolute"` | Line number display mode |
-| `scrolloff` | u8 | `0` | Minimum lines above/below cursor |
+| Option          | Type   | Default      | Description                      |
+| --------------- | ------ | ------------ | -------------------------------- |
+| `line_wrap`     | bool   | `true`       | Soft line wrapping               |
+| `tab_width`     | u16    | `4`          | Tab display width                |
+| `left_padding`  | u16    | `0`          | Left editor padding              |
+| `right_padding` | u16    | `1`          | Right editor padding             |
+| `line_numbers`  | string | `"absolute"` | Line number display mode         |
+| `scrolloff`     | u8     | `0`          | Minimum lines above/below cursor |
 
 ### Line Number Modes
 
-| Mode | Description |
-|------|-------------|
-| `"none"` | No line numbers |
-| `"absolute"` | Standard line numbers (1, 2, 3, ...) - default |
+| Mode         | Description                                        |
+| ------------ | -------------------------------------------------- |
+| `"none"`     | No line numbers                                    |
+| `"absolute"` | Standard line numbers (1, 2, 3, ...) - default     |
 | `"relative"` | Relative to cursor position (current line shows 0) |
-| `"hybrid"` | Current line shows absolute, others show relative |
+| `"hybrid"`   | Current line shows absolute, others show relative  |
 
 <Callout>
-Hybrid mode is useful for vim users who frequently use relative motions like `5j` or `10k` while still seeing the actual line number at the cursor.
+  Hybrid mode is useful for vim users who frequently use relative motions like
+  `5j` or `10k` while still seeing the actual line number at the cursor.
 </Callout>
 
 ### Scrolloff
@@ -124,7 +153,8 @@ scrolloff = 8  # Always keep 8 lines of context
 ```
 
 <Callout>
-Setting `scrolloff` to a high value (like half your screen height) effectively keeps the cursor centered while scrolling.
+  Setting `scrolloff` to a high value (like half your screen height) effectively
+  keeps the cursor centered while scrolling.
 </Callout>
 
 ## Syntax Themes
@@ -157,17 +187,18 @@ ekphos --reset
 ekphos --clean-cache
 ```
 
-| Option | Description |
-|--------|-------------|
-| `-h, --help` | Print help information |
-| `-v, --version` | Print version information |
-| `-c, --config` | Print config file path |
-| `-d, --dir` | Print notes directory path |
-| `--reset` | Reset config and themes to defaults |
-| `--clean-cache` | Clear the search index cache |
+| Option          | Description                                         |
+| --------------- | --------------------------------------------------- |
+| `-h, --help`    | Print help information                              |
+| `-v, --version` | Print version information                           |
+| `-c, --config`  | Print config file path                              |
+| `-d, --dir`     | Print notes directory path                          |
+| `--reset`       | Reset config and themes to defaults                 |
+| `--clean-cache` | Clear the search index, last note, and images cache |
 
 <Callout type="warn">
-Use `ekphos --reset` after major updates if you experience issues. This resets config and themes to defaults.
+  Use `ekphos --reset` after major updates if you experience issues. This resets
+  config and themes to defaults.
 </Callout>
 
 ## Example Configuration
@@ -183,6 +214,8 @@ outline_collapsed = false
 folders_first = true
 frontmatter_hidden = true
 show_tags = true
+check_updates = true
+transparent_bg = false
 
 [editor]
 line_wrap = true
