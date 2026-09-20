@@ -155,34 +155,47 @@ handles, and persistence details.
 
 | Key                                    | Action                                  |
 | -------------------------------------- | --------------------------------------- |
-| `h` / `j` / `k` / `l` or arrows       | Select the nearest card by direction    |
+| `a`                                    | Open the add-card menu                   |
+| `Shift+F10`                            | Open the selected item's context menu    |
+| `F3`                                   | Show or hide the Canvas shortcut legend  |
+| `j` / `k` or up/down arrows            | Select a card above or below            |
+| `Shift+H` / `Shift+L`                  | Select a card to the left or right      |
 | `Shift` + arrows                       | Pan the Canvas                          |
 | `Alt` + arrows                         | Move the selected card                  |
 | `Alt+Shift` + arrows                   | Resize the selected card                |
-| `+` / `=` / `-`                       | Zoom in or out                          |
+| `z i` / `z o`                          | Zoom in or out                          |
 | `f`                                    | Fit all Canvas content                  |
 | `Enter` / `Space`                      | Open a file card or edit another card   |
 | `F6`                                   | Edit the selected text, link, or group  |
 | `c`                                    | Start a connection from the selected card |
 | `[` / `]`                              | Select the previous or next connection  |
-| `Delete` / `Backspace` / `x`           | Detach the selected connection          |
-| `Ctrl+z` / `Ctrl+Shift+z` / `Ctrl+y`   | Undo / redo Canvas changes              |
+| `Delete` / `Backspace` / `x`           | Delete the selected card or connection  |
+| `u` / `Ctrl+r`                         | Undo / redo Canvas changes              |
 | `e` / `E`                              | Edit the raw JSON source                |
+
+Canvas context menus use arrows or `j` / `k`, `Home` / `End`, `Enter` or
+`Space`, and `Esc`. The file-card picker accepts typed search, arrows,
+`PageUp` / `PageDown`, `Enter`, and `Esc`.
+
+Canvas-local history keys are deliberately separate from the global bindings:
+`Ctrl+z` still toggles zen mode and `Ctrl+y` still opens Task View while a
+Canvas has focus. Likewise, `h` / `l` and left/right still change panel focus,
+while `-` / `=` still move through navigation history.
 
 ## Sidebar
 
-| Key     | Action                    |
-| ------- | ------------------------- |
-| `n`     | Create new note           |
-| `N`     | Create new folder         |
-| `Enter` | Open note / Toggle folder |
-| `r`     | Rename                    |
-| `d`     | Delete                    |
-| `x`     | Cut (for move)            |
-| `p`     | Paste (move cut item)     |
-| `e`     | Edit note                 |
-| `/`     | Search notes              |
-| `s`     | Cycle sort mode           |
+| Key     | Action                         |
+| ------- | ------------------------------ |
+| `n`     | Create a Note, Canvas, or Base |
+| `N`     | Create new folder              |
+| `Enter` | Open note / Toggle folder      |
+| `r`     | Rename                         |
+| `d`     | Delete                         |
+| `x`     | Cut (for move)                 |
+| `p`     | Paste (move cut item)          |
+| `e`     | Edit note                      |
+| `/`     | Search notes                   |
+| `s`     | Cycle sort mode                |
 
 ### Move/Relocate Files
 
@@ -314,6 +327,8 @@ arrow keys move the caret, and holding Shift extends the selection.
 | `Home` / `End`                           | Move to the start or end of the line    |
 | `Ctrl+Home` / `Ctrl+End`                 | Move to the start or end of the document    |
 | `PgUp` / `PgDn`                          | Move one page                               |
+| `Tab`                                    | Indent the current list item, including its marker |
+| `Shift+Tab`                              | Outdent the current list item               |
 | `Ctrl+a`                                 | Select all                                  |
 | `Ctrl+c` / `Ctrl+x` / `Ctrl+v`           | Copy / cut / paste                          |
 | `Ctrl+z` / `Ctrl+y`                      | Undo / redo                                 |
@@ -336,12 +351,17 @@ modes:
 | Key      | Action                                                    |
 | -------- | --------------------------------------------------------- |
 | `Ctrl+l` | Make the current line a managed task                     |
-| `Tab`    | Toggle an H1-H3 fold; indent on any other line            |
+| `Tab`    | Toggle an H1-H3 fold when the caret is on its heading     |
 
 `Ctrl+l` works on plain, bulleted, and checklist lines. It adds the checkbox and
 `#task` marker as needed while keeping indentation and the existing `-`, `*`,
 or `+` list marker. It leaves existing managed tasks and unsupported Markdown
 blocks unchanged. The insertion is one undoable edit.
+
+In Standard editing, `Tab` and `Shift+Tab` change the nesting level of an
+unordered, ordered, checklist, or managed task item. The entire line moves, so
+the list marker stays with its text. On other non-heading lines, `Tab` inserts a
+normal tab at the caret.
 
 Folding hides a heading's content without changing the note. A folded heading
 shows a non-editable `…` indicator, cursor movement skips its hidden rows, and a

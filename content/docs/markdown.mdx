@@ -39,7 +39,8 @@ When folded, all content until the next heading of equal or higher level is hidd
 **While editing**:
 
 - Press `Tab` on an H1-H3 heading to toggle its section. On any other line,
-  `Tab` keeps its normal indentation behavior.
+  Standard editing uses the list-aware indentation described below or inserts
+  a tab at the caret.
 - In Vim Normal mode, use `za` to toggle the current heading, `zM` to fold all
   headings, or `zR` to unfold all headings.
 
@@ -67,12 +68,13 @@ Only H1-H3 appear in the outline panel for navigation and support folding.
 
 ## LaTeX Math
 
-Use `$...$` for an equation inside prose and `$$...$$` for a centered display
-equation. Rendering starts automatically when the note enters the content
-preview, even when another panel has focus.
+Use `$...$` or `\(...\)` for an equation inside prose. Use `$$...$$` or
+`\[...\]` for a centered display equation. Rendering starts automatically when
+the note enters the content preview, even when another panel has focus.
 
 ```markdown
 The energy relation is $E = mc^2$.
+Use display style inline with \(\displaystyle \sum_{i=1}^{n} i\).
 
 $$
 \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
@@ -80,9 +82,18 @@ $$
 ```
 
 Read the [LaTeX math guide](/docs/latex) for syntax rules, terminal support,
-fallback behavior, and display-height configuration.
+fallback behavior, and equation-height configuration.
 
 ## Lists
+
+In Standard editing, press `Tab` anywhere on an unordered, ordered, checklist,
+or managed task line to indent the entire item, including its list marker.
+Press `Shift+Tab` to move the item back one level. Both shortcuts keep the
+marker and text together.
+
+In the content preview, nested unordered items keep the same bullet styling as
+top-level items. Nested checklists and managed tasks use tree connectors to make
+their hierarchy visible; their checkboxes remain interactive.
 
 ### Unordered
 

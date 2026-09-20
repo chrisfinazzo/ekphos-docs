@@ -10,6 +10,41 @@ reads and writes the JSON Canvas 1.0 format used by `.canvas` files, including
 standard colors, card dimensions, connection endpoints, labels, and extension
 fields.
 
+## Create a Canvas
+
+Press `n` to open the **New Document** dialog, then press `Tab` or the left and
+right arrows until **Canvas** is selected. Enter a name and press `Enter`.
+Ekphos adds the `.canvas` extension, creates valid empty JSON Canvas content,
+and opens the new Canvas immediately.
+
+An empty Canvas is ready to edit visually. Right-click anywhere in the Canvas
+and choose a card type, press `a` to open the same add menu from the keyboard,
+or double-click empty space to create a text card immediately. You do not need
+to edit JSON to build a Canvas.
+
+## Create and manage cards
+
+Right-click empty space to open the Canvas menu at the pointer. New cards are
+centered at that location and saved immediately.
+
+| Menu action        | Result                                                   |
+| ------------------ | -------------------------------------------------------- |
+| Add text card      | Create a text card and start editing it                  |
+| Add file card      | Search the vault, then create a card for the chosen file |
+| Add link card      | Create a link card and start entering its URL            |
+| Add group          | Create a group and start naming it                       |
+| Fit Canvas to view | Reframe all cards and groups                             |
+
+Right-click a card to edit or open it, duplicate it, start a connection, or
+delete it. Right-click a connection to delete it. Deleting a card also removes
+its attached connections; press `u` to undo if you change your mind.
+
+The menus are fully keyboard-operable. Press `Shift+F10` for the selected card
+or connection, move with arrows or `j` / `k`, activate with `Enter` or `Space`,
+and close with `Esc`. In the file picker, type to filter the vault, use arrows
+or `PageUp` / `PageDown` to move, and press `Enter` to add the selected file.
+With a mouse, click once to select a file and double-click it to add the card.
+
 ## Supported content
 
 | Card type | Canvas content                               |
@@ -28,14 +63,22 @@ highlighted without changing the stored Canvas data.
 | Key or action                       | Result                               |
 | ----------------------------------- | ------------------------------------ |
 | Click a card                        | Select the card                      |
+| Double-click empty space            | Create and edit a text card          |
+| Right-click                         | Open actions for that location       |
 | Drag a card                         | Move and save the card               |
 | Drag empty space                    | Pan the Canvas                       |
+| Middle-button drag                  | Pan from anywhere                    |
 | Scroll outside the active editor    | Zoom around the pointer              |
-| `h` / `j` / `k` / `l` or arrows    | Select the nearest card by direction |
+| `j` / `k` or up/down arrows         | Select a card above or below         |
+| `Shift+H` / `Shift+L`               | Select a card to the left or right   |
 | `Shift` + arrows                    | Pan the Canvas                       |
 | `Alt` + arrows                      | Move the selected card               |
-| `+` / `=` / `-`                    | Zoom in or out                       |
+| `z i` / `z o`                       | Zoom in or out                       |
 | `f`                                 | Fit all Canvas content               |
+
+The footer starts with one compact row so it does not crowd the workspace.
+Click **F3 shortcuts** or press `F3` to reveal the complete Canvas shortcut
+legend; use the same control again to collapse it.
 
 ## Resize cards and groups
 
@@ -76,7 +119,7 @@ card, and the editor follows the caret when it moves beyond the visible area.
 | `PageUp` / `PageDown`        | Move by one visible editor page               |
 | Scroll over a text editor    | Review hidden rows inside the card            |
 | `Enter`                      | Add a line break in a text card               |
-| `Ctrl+Enter` or `Ctrl+S`     | Save a text card                              |
+| `Ctrl+S`                     | Save a text card                              |
 | `Enter`                      | Save a link or group name                     |
 | Click outside the card       | Save the edit                                 |
 | `Esc`                        | Cancel without changing the Canvas            |
@@ -86,9 +129,9 @@ card opens that Markdown file directly in the editor, instead of showing the
 Canvas JSON.
 
 <Callout>
-  Press `e` or uppercase `E` when you intentionally need the complete JSON
-  source. Raw source editing remains available for adding cards or changing
-  fields that do not yet have a visual control.
+  Press uppercase `E` only when you intentionally want the complete JSON
+  source—for example, to inspect vendor-specific extension fields or repair a
+  malformed file. Normal Canvas authoring stays in the visual view.
 </Callout>
 
 ## Attach and detach connections
@@ -107,7 +150,8 @@ For keyboard-only connection editing:
 
 Click a connection to select it, or use `[` and `]` to cycle through
 connections. Press `Delete`, `Backspace`, or `x` to detach the selected
-connection.
+connection. With no connection selected, those keys delete the selected card
+and its attached connections.
 
 ## Open card targets
 
@@ -117,11 +161,13 @@ links use the configured system opener.
 
 ## Saving and compatibility
 
-Moving or resizing cards, editing content, attaching connections, and
-detaching connections are saved atomically. `Ctrl+Z` undoes a Canvas change;
-`Ctrl+Shift+Z` or `Ctrl+Y` redoes it. Ekphos preserves unknown root, card, and
-connection fields when it rewrites a Canvas, which keeps vendor extensions
-available for other JSON Canvas applications.
+Creating, duplicating, deleting, moving, or resizing cards; editing content;
+and attaching or detaching connections are saved atomically. Press `u` to undo
+a Canvas change and `Ctrl+R` to redo it. These Canvas-local bindings do not
+replace global panel focus (`h` / `l` or left/right), navigation history
+(`-` / `=`), `Ctrl+Z` zen mode, or `Ctrl+Y` task view. Ekphos preserves unknown
+root, card, and connection fields when it rewrites a Canvas, which keeps vendor
+extensions available for other JSON Canvas applications.
 
 If a Canvas cannot be parsed, Ekphos shows the source location and leaves the
 file untouched. Press `E` to repair the JSON source.

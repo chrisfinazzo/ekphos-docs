@@ -10,41 +10,50 @@ sit inside prose, while display equations get their own centered block.
 
 ## Inline Equations
 
-Wrap an expression in single dollar signs:
+Wrap an expression in single dollar signs or `\(` and `\)`:
 
 ```markdown
 Einstein's mass-energy relation is $E = mc^2$.
 
-- Euler's identity is $e^{i\pi} + 1 = 0$.
-- [ ] Verify $\sum_{k=1}^{n} k = \frac{n(n+1)}{2}$.
+- Euler's identity is \(e^{i\pi} + 1 = 0\).
+- [ ] Verify \(\displaystyle \sum_{k=1}^{n} k = \frac{n(n+1)}{2}\).
 ```
 
 Inline equations render in regular prose, lists, blockquotes, and tasks. They
-stay on one terminal row and participate in normal word wrapping, so text and
-links around an equation remain aligned and selectable.
+participate in normal word wrapping, so text and links around an equation remain
+aligned and selectable. Inline math uses text style by default. Add
+`\displaystyle` when a formula needs larger operators, fractions, or limits.
 
-The first and last characters inside the delimiters cannot be whitespace. Write
-`$E = mc^2$`, not `$ E = mc^2 $`. Escaped dollar signs and expressions inside
-inline code remain literal text.
+With dollar delimiters, the first and last characters cannot be whitespace.
+Write `$E = mc^2$`, not `$ E = mc^2 $`. Parenthesized delimiters accept
+surrounding whitespace. Escaped delimiters and expressions inside inline code
+remain literal text.
 
 ## Display Equations
 
-Wrap a formula in double dollar signs to give it a dedicated block:
+Wrap a formula in double dollar signs or `\[` and `\]` to give it a dedicated
+block:
 
 ```markdown
 $$
 \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
+
+\[
+\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+\]
 ```
 
 Single-line display equations work too:
 
 ```markdown
 $$e^{i\pi} + 1 = 0$$
+\[x^2 + y^2 = z^2\]
 ```
 
 Display equations preserve their aspect ratio and shrink when the content
-panel is too narrow for the configured height.
+panel is too narrow for the configured height. Multi-line opening and closing
+delimiters must use the same form.
 
 ## Preview Behavior
 
@@ -58,21 +67,24 @@ from jumping.
   Return to the content preview to see the rendered equation.
 </Callout>
 
-## Display Height
+## Equation Heights
 
-Set `latex_height` under `[general]` in `~/.config/ekphos/config.toml`. The value
-is the target height of a display-equation block in terminal rows:
+Set equation heights under `[general]` in `~/.config/ekphos/config.toml`. Both
+values use terminal rows:
 
 ```toml title="config.toml"
 [general]
 latex_height = 8
+inline_latex_height = 2
 ```
 
-The default is `8`. Values below `3` are treated as `3`, leaving room for the
-equation and its block spacing. Inline equations always use one terminal row
-and are not affected by `latex_height`.
+`latex_height` controls display-equation blocks and defaults to `8`; values
+below `3` are treated as `3` to leave room for block spacing.
+`inline_latex_height` controls equations inside prose and defaults to `2`; use
+`1` for a compact single-row layout or `3` for larger equations. Wide equations
+may render shorter to preserve their aspect ratio.
 
-After editing the configuration, press `Ctrl+Shift+R` to apply the new height
+After editing the configuration, press `Ctrl+Shift+R` to apply the new heights
 without restarting Ekphos. See the [configuration reference](/docs/configuration#latex-height)
 for the other preview settings.
 

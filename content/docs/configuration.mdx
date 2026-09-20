@@ -53,8 +53,9 @@ syntax_theme = "base16-ocean.dark"
 image_height = 8
 inline_image_height = 4
 
-# Display equation height in terminal rows
+# Display and inline equation heights in terminal rows
 latex_height = 8
+inline_latex_height = 2
 
 # Sidebar width as a percentage of the terminal
 sidebar_width_percent = 20
@@ -104,6 +105,7 @@ style = "outlined"
 | `image_height`            | integer | `8`                  | Standalone image height in rows       |
 | `inline_image_height`     | integer | `4`                  | Inline thumbnail height in rows       |
 | `latex_height`            | integer | `8`                  | Display equation height in rows       |
+| `inline_latex_height`     | integer | `2`                  | Inline equation height in rows        |
 | `sidebar_width_percent`   | integer | `20`                 | Sidebar width percentage              |
 | `outline_width_percent`   | integer | `20`                 | Outline width percentage              |
 | `sidebar_collapsed`       | bool    | `false`              | Start with sidebar collapsed          |
@@ -191,19 +193,21 @@ config, press `Ctrl+Shift+R` to apply the new heights without restarting ekphos.
 
 ### LaTeX Height
 
-Use `latex_height` to set the target height of display equations in terminal
-rows:
+Use `latex_height` for display equations and `inline_latex_height` for equations
+inside prose. Both values use terminal rows:
 
 ```toml title="config.toml"
 [general]
 latex_height = 8
+inline_latex_height = 2
 ```
 
-The default is `8`. Values below `3` are treated as `3`. Wide equations may
-render shorter so they can preserve their aspect ratio within the content
-panel. Inline equations stay on one terminal row and do not use this setting.
+The display default is `8`, and values below `3` are treated as `3`. The inline
+default is `2`; use `1` for a compact single-row layout or `3` for larger
+equations. Wide equations may render shorter so they can preserve their aspect
+ratio within the content panel.
 
-Press `Ctrl+Shift+R` after editing the config to apply the new height without
+Press `Ctrl+Shift+R` after editing the config to apply the new heights without
 restarting Ekphos. Read the [LaTeX math guide](/docs/latex) for equation syntax,
 terminal requirements, and fallback behavior.
 
@@ -358,7 +362,7 @@ search inputs, and Graph View remain fixed.
 | `fold_all` | `z Shift+M` | Content |
 | `unfold_all` | `z Shift+R` | Content |
 | `edit_note` | `e` | Global |
-| `create_note` | `n` | Outside zen mode |
+| `create_note` | `n` | Open New Document for a Note, Canvas, or Base; outside zen mode |
 | `create_folder` | `Shift+N` | Outside zen mode |
 | `delete_item` | `d` | Outside zen mode |
 | `rename_item` | `r` | Outside zen mode |
@@ -368,6 +372,13 @@ search inputs, and Graph View remain fixed.
 | `sidebar_search` | `/` | Sidebar |
 | `cycle_sort` | `s` | Sidebar |
 | `toggle_editor_mode` | `F6` | Preview and editor |
+| `canvas_select_left` | `Shift+H` | Canvas content |
+| `canvas_select_right` | `Shift+L` | Canvas content |
+| `canvas_zoom_in` | `z i` | Canvas content |
+| `canvas_zoom_out` | `z o` | Canvas content |
+| `canvas_undo` | `u` | Canvas content |
+| `canvas_redo` | `Ctrl+R` | Canvas content |
+| `toggle_canvas_shortcuts` | `F3` | Canvas content |
 | `insert_task` | `Ctrl+L` | Make a plain, unordered-list, or checklist line a task |
 | `toggle_editor_fold` | `Tab` | Editor: H1-H3 heading |
 
@@ -510,6 +521,7 @@ syntax_theme = "base16-mocha.dark"
 image_height = 8
 inline_image_height = 4
 latex_height = 8
+inline_latex_height = 2
 sidebar_width_percent = 20
 outline_width_percent = 20
 sidebar_collapsed = false

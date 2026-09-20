@@ -22,9 +22,11 @@ tag, through September 12, 2026.
 - **Remappable app commands** live under `[keybindings]`. A command can have
   multiple bindings, be disabled with an empty array, and appear with its active
   binding in the interface and help dialog.
-- **Heading folding while editing** is available for H1-H3 sections. `Tab`
-  toggles the current heading and still indents ordinary lines; Vim also supports
-  `za`, `zM`, and `zR`.
+- **Heading and list indentation while editing** keeps `Tab` context-aware. It
+  toggles H1-H3 sections; in Standard editing, `Tab` and `Shift+Tab` indent and
+  outdent entire list items, including their markers. Nested bullets retain
+  their list styling, while nested checklist and task rows gain tree connectors.
+  Vim also supports `za`, `zM`, and `zR` for folds.
 - **Task insertion** with `Ctrl+l` converts the current plain, list, or checklist
   line into a managed `#task` item as one undoable edit.
 - **Complete in-app help** now lists every configurable app command and supports
@@ -43,8 +45,10 @@ list.
   sorted, grouped, and summarized views stored in `.base` files.
 - **Canvas** reads and writes JSON Canvas files, with spatial navigation, inline
   card editing, move and resize controls, connection editing, and undo/redo.
-- **LaTeX math** renders `$...$` inline expressions and `$$...$$` display blocks
-  in compatible terminals, with readable source fallback elsewhere.
+- **LaTeX math** renders `$...$` or `\(...\)` inline expressions and `$$...$$`
+  or `\[...\]` display blocks in compatible terminals. Inline math supports
+  `\displaystyle` and a separate configurable height, with readable source
+  fallback elsewhere.
 - **Frontmatter templates** apply folder-aware YAML fragments and the
   `{{title}}`, `{{date}}`, and `{{folder}}` variables when creating notes.
 
@@ -98,6 +102,7 @@ options are:
 | `[general]` | `image_height` | `8` |
 | `[general]` | `inline_image_height` | `4` |
 | `[general]` | `latex_height` | `8` |
+| `[general]` | `inline_latex_height` | `2` |
 | `[general]` | `sidebar_width_percent` | `20` |
 | `[general]` | `outline_width_percent` | `20` |
 | `[general]` | `style` | `"outlined"` |
