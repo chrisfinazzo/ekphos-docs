@@ -6,7 +6,9 @@ description: Write and preview inline and display equations
 import { Callout } from 'fumadocs-ui/components/callout';
 
 Ekphos renders LaTeX equations directly in the content preview. Inline equations
-sit inside prose, while display equations get their own centered block.
+sit inside prose, while display equations get their own centered block. The
+syntax and behavior follow Obsidian, so math written in an Obsidian vault
+renders the same way in Ekphos.
 
 ## Inline Equations
 
@@ -24,10 +26,22 @@ participate in normal word wrapping, so text and links around an equation remain
 aligned and selectable. Inline math uses text style by default. Add
 `\displaystyle` when a formula needs larger operators, fractions, or limits.
 
+Every inline equation uses the same scale, so its size follows its content: a
+lone symbol stays about as tall as the text, a fraction or a sum with limits
+takes a little more room, and a `\displaystyle` sum is taller still. The
+surrounding text lines up with the equation's baseline, so it sits beside the
+middle of a tall sum rather than below it.
+
 With dollar delimiters, the first and last characters cannot be whitespace.
 Write `$E = mc^2$`, not `$ E = mc^2 $`. Parenthesized delimiters accept
 surrounding whitespace. Escaped delimiters and expressions inside inline code
-remain literal text.
+remain literal text, and prices such as `$5 and $4` stay text.
+
+Double dollar signs inside a sentence render in display style, as in Obsidian:
+
+```markdown
+The area is $$\int_0^1 x\,dx = \tfrac{1}{2}$$ square units.
+```
 
 ## Display Equations
 
@@ -44,32 +58,140 @@ $$
 \]
 ```
 
-Single-line display equations work too:
+Single-line display equations work too, and the opening and closing delimiters
+can share a line with the formula:
 
 ```markdown
 $$e^{i\pi} + 1 = 0$$
 \[x^2 + y^2 = z^2\]
+
+$$\begin{aligned}
+(a + b)^2 &= a^2 + 2ab + b^2 \\
+(a - b)^2 &= a^2 - 2ab + b^2
+\end{aligned}$$
 ```
 
-Display equations preserve their aspect ratio and shrink when the content
-panel is too narrow for the configured height. Multi-line opening and closing
-delimiters must use the same form.
+Display equations keep their aspect ratio. Tall equations such as matrices and
+aligned systems get more rows than a single-line formula, and an equation that
+is too wide for the content panel shrinks to fit. Opening and closing
+delimiters must use the same form: `$$` closes `$$`, and `\]` closes `\[`.
+
+### Display Equations in Lists
+
+A display equation can be a list item. The bullet or number stays on the first
+row, and the equation is centered below it, as in Obsidian:
+
+```markdown
+- Quadratic formula:
+    - $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+    - $$
+      \begin{bmatrix}
+      1 & 2 & 3 \\
+      4 & 5 & 6
+      \end{bmatrix}
+      $$
+1. $$e^{i\pi} + 1 = 0$$
+```
+
+A block indented under a list item stays aligned with that item:
+
+```markdown
+- The triangle inequality:
+
+  $$
+  \lVert u + v \rVert \le \lVert u \rVert + \lVert v \rVert
+  $$
+```
+
+## Numbering and Tags
+
+Obsidian never numbers equations on its own, and neither does Ekphos. The
+`align`, `equation`, `gather`, and `alignat` environments render without
+`(1)`, `(2)` labels. An explicit `\tag` still appears, and `\notag` or
+`\nonumber` leave a row untagged:
+
+```markdown
+$$
+\begin{align}
+E &= mc^2 \tag{Einstein} \\
+p &= mv \notag \\
+F &= ma \tag{2.1}
+\end{align}
+$$
+```
+
+## Obsidian Compatibility
+
+Obsidian renders math with MathJax. Ekphos accepts the MathJax syntax that
+Obsidian notes commonly rely on, including commands that KaTeX-style renderers
+reject.
+
+### Note-Wide Macros
+
+Macros defined in any equation apply to every equation in the same note, as in
+Obsidian. A block that only defines macros renders as empty space:
+
+```markdown
+$$
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\def\norm#1{\left\lVert #1 \right\rVert}
+\DeclareMathOperator*{\argmax}{arg\,max}
+$$
+
+A vector $\vect{v} \in \R^3$ has norm $\norm{\vect{v}}$.
+The maximizer is $\argmax_{x} f(x)$.
+```
+
+`\newcommand`, `\renewcommand`, `\providecommand`, `\def`, `\gdef`, and
+`\DeclareMathOperator` are supported. Like MathJax, `\newcommand` can redefine a
+name that already exists, such as `\R` or `\N`.
+
+### MathJax Environments and Commands
+
+| MathJax syntax | Ekphos behavior |
+| -------------- | --------------- |
+| `eqnarray` | Renders as three aligned columns |
+| `multline` | Renders with every line centered |
+| `flalign` | Renders like `align` |
+| `\label` | Accepted and hidden |
+| `\eqref`, `\ref` | Show `(???)` and `???`, since nothing is numbered |
+| `\require` | Accepted and ignored |
+| `\displaylines` | Stacks lines without alignment points |
+| `\intertext` | Places the text on its own row |
+| `\bbox` | Shows the content without the border or background |
+| `\class`, `\style`, `\cssId` | Show the content without the CSS |
+
+### Differences from Obsidian
+
+- `$$...$$` inside a sentence stays on the same line in display style. Obsidian
+  moves it onto its own centered line.
+- Display equations that span several lines inside a blockquote or callout
+  show as text.
+- `multline` centers every line instead of pushing the first line left and the
+  last line right.
+- `\bbox`, `\class`, `\style`, and `\cssId` drop their styling.
+- `\unicode` and `\enclose` are not supported.
+- Display equations are larger relative to the text than in Obsidian, because
+  a terminal row is coarser than a line of prose. See
+  [Equation Size](#equation-size) to change the scale.
 
 ## Preview Behavior
 
 Equation rendering starts whenever a note enters the content preview. You do
 not need to focus the content panel or press another key. While a display
 equation is rendering, Ekphos reserves its configured space to keep nearby text
-from jumping.
+from jumping. An equation Ekphos cannot parse shows a short error with its
+source, so the rest of the note keeps its layout.
 
 <Callout>
   In edit mode, Ekphos keeps the LaTeX source visible and syntax-highlighted.
   Return to the content preview to see the rendered equation.
 </Callout>
 
-## Equation Heights
+## Equation Size
 
-Set equation heights under `[general]` in `~/.config/ekphos/config.toml`. Both
+Set the equation scale under `[general]` in `~/.config/ekphos/config.toml`. Both
 values use terminal rows:
 
 ```toml title="config.toml"
@@ -78,15 +200,21 @@ latex_height = 8
 inline_latex_height = 2
 ```
 
-`latex_height` controls display-equation blocks and defaults to `8`; values
-below `3` are treated as `3` to leave room for block spacing.
-`inline_latex_height` controls equations inside prose and defaults to `2`; use
-`1` for a compact single-row layout or `3` for larger equations. Wide equations
-may render shorter to preserve their aspect ratio.
+`latex_height` sets the scale of display equations and defaults to `8`: a
+display fraction such as the quadratic formula fills about that many rows,
+including a blank row above and below. Taller equations such as matrices,
+aligned systems, and cases grow in proportion, and a single symbol takes less.
+Values below `3` are treated as `3` to leave room for block spacing.
 
-After editing the configuration, press `Ctrl+Shift+R` to apply the new heights
-without restarting Ekphos. See the [configuration reference](/docs/configuration#latex-height)
-for the other preview settings.
+`inline_latex_height` sets the scale of equations inside prose and defaults to
+`2`: a fraction takes that many rows, and a lone symbol takes one. Use `1` for a
+compact layout or `3` for larger equations.
+
+An equation that is too wide for the content panel or too tall for the screen
+shrinks to fit. After editing the configuration, press `Ctrl+Shift+R` to apply
+the new scale without restarting Ekphos. See the
+[configuration reference](/docs/configuration#latex-height) for the other
+preview settings.
 
 ## Compatible Terminals
 

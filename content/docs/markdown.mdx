@@ -36,7 +36,7 @@ H1-H3 headings can be folded to collapse their content, creating a cleaner works
 
 When folded, all content until the next heading of equal or higher level is hidden.
 
-**While editing**:
+**While editing** in Standard or Vim mode:
 
 - Press `Tab` on an H1-H3 heading to toggle its section. On any other line,
   Standard editing uses the list-aware indentation described below or inserts
@@ -69,8 +69,10 @@ Only H1-H3 appear in the outline panel for navigation and support folding.
 ## LaTeX Math
 
 Use `$...$` or `\(...\)` for an equation inside prose. Use `$$...$$` or
-`\[...\]` for a centered display equation. Rendering starts automatically when
-the note enters the content preview, even when another panel has focus.
+`\[...\]` for a centered display equation, including as a list item. Rendering
+starts automatically when the note enters the content preview, even when
+another panel has focus. Math follows Obsidian's behavior, so equations from an
+Obsidian vault render the same way.
 
 ```markdown
 The energy relation is $E = mc^2$.
@@ -81,8 +83,44 @@ $$
 $$
 ```
 
-Read the [LaTeX math guide](/docs/latex) for syntax rules, terminal support,
-fallback behavior, and equation-height configuration.
+Read the [LaTeX math guide](/docs/latex) for syntax rules, Obsidian
+compatibility, terminal support, fallback behavior, and equation-size
+configuration.
+
+## Callouts
+
+Start a blockquote with `[!type]` to turn it into an Obsidian-style callout
+with an icon, a title, and a colored bar. Add `-` or `+` after the type to make
+it foldable, then press `Space`, `za`, or click the title to toggle it.
+
+```markdown
+> [!tip] Callouts can have custom titles
+> The body supports **formatting**, [[links]], and lists.
+
+> [!faq]- Collapsed until you open it
+> Hidden answer.
+```
+
+Read the [callouts guide](/docs/callouts) for every type and alias, folding,
+nesting, and differences from Obsidian.
+
+## Mermaid Diagrams
+
+A fenced code block tagged `mermaid` renders as a diagram in your theme's
+colors. Press `Enter`, `Space`, or `o` on the diagram, or click it, to open a
+full-screen viewer where you can zoom, pan, and step through every diagram in
+the note.
+
+````markdown
+```mermaid
+sequenceDiagram
+    Writer->>Ekphos: Open note
+    Ekphos-->>Writer: Rendered diagram
+```
+````
+
+Read the [Mermaid diagrams guide](/docs/mermaid) for supported diagram types,
+viewer controls, themes, and differences from Obsidian.
 
 ## Lists
 
@@ -128,8 +166,8 @@ All checkboxes are interactive: press `Space` in content view to toggle one.
 Plain checkboxes remain regular checklist items. A checkbox containing the
 standalone `#task` tag is a managed task that appears in Task View.
 
-In edit mode, press `Ctrl+l` on a plain, unordered-list, or checklist line to
-make it a managed task. The shortcut adds the checkbox and `#task` marker as
+In Standard or Vim editing, press `Ctrl+l` on a plain, unordered-list, or
+checklist line to make it a managed task. The shortcut adds the checkbox and `#task` marker as
 needed. Existing managed tasks remain unchanged, and the insertion is one
 undoable edit. See [Task Management](/docs/task-management#writing-tasks) for
 details.
@@ -187,7 +225,7 @@ Obsidian-style linking between notes:
 **Features**:
 - Valid links shown in cyan
 - Invalid links shown in red
-- Type `[[` in edit mode for autocomplete
+- Type `[[` in Standard or Vim editing for autocomplete
 - Creates non-existent notes on navigation
 - Aliases display the custom text instead of note name
 - Heading links navigate to the specified section
@@ -338,5 +376,6 @@ In edit mode, real-time highlighting shows:
 | Wiki links (valid) | Cyan |
 | Wiki links (invalid) | Red |
 | Blockquotes | Cyan |
+| Callout markers (`[!type]`) | Cyan, bold |
 | List markers | Yellow |
 | Task boxes | Cyan |

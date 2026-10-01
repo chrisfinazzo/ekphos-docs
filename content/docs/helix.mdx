@@ -1,0 +1,205 @@
+---
+title: Helix Editing
+description: Selection-based editing, multiple cursors, and Helix keys in Ekphos
+---
+
+Helix mode edits Markdown notes with selections as cursors. Every Normal-mode
+cursor selects a character; commands such as `d`, `c`, and `y` act on each
+selection. Press `F6` in the preview or editor, choose **Helix**, and press
+`Enter`. The choice is saved. You can also set it in `config.toml`:
+
+```toml title="config.toml"
+[editor]
+mode = "helix"
+```
+
+The `F6` picker accepts arrow keys, `j`/`k`, or `Tab` to move. Press `s`, `v`, or
+`h` to choose Standard, Vim, or Helix directly. `Esc` closes it without changing
+the current editing session. In the Canvas view, `F6` still edits the selected
+node.
+
+The editor border shows the current mode (`NORMAL`, `INSERT`, or `SELECT`), and
+the status bar shows pending keys, counts, registers, and prompts. `Esc` does
+not leave the editor in Helix mode; use `:q` to return to the preview.
+
+## Start Editing
+
+| Key | Action |
+| --- | ------ |
+| `i` / `a` | Insert before / after each selection |
+| `I` / `A` | Insert at the first nonblank character / end of each line |
+| `o` / `O` | Open a line below / above and enter Insert mode |
+| `v` | Toggle Select mode; movements extend selections |
+| `Esc` | Return to Normal mode from Insert or Select mode, keeping the selections |
+| `u` / `U` | Undo / redo |
+| `.` | Insert the last inserted text again after each selection |
+| `F1` / `Space ?` | Open the in-app help |
+
+An Insert-mode session is one undo step. Press `Esc` to finish it, then `u` to
+undo or `U` to redo.
+
+### Insert Mode
+
+| Key | Action |
+| --- | ------ |
+| Arrow keys, `Home`, `End` | Move every cursor |
+| `Enter` / `Ctrl+j` | Start a new line with the current indentation |
+| `Backspace` / `Ctrl+h` | Delete the previous character |
+| `Delete` / `Ctrl+d` | Delete the next character |
+| `Ctrl+w` / `Alt+Backspace` | Delete the previous word |
+| `Alt+d` | Delete the next word |
+| `Ctrl+u` / `Ctrl+k` | Delete to the start / end of the line |
+| `Ctrl+r<register>` | Insert the contents of a register |
+| `Ctrl+v` | Paste clipboard text or a copied image |
+| `Ctrl+s` | Start a new undo step without leaving Insert mode |
+
+## Move and Select
+
+| Key | Action |
+| --- | ------ |
+| `h` / `j` / `k` / `l` | Move left / down / up / right; arrow keys work too |
+| `w` / `b` / `e` | Select to the next word start / previous word start / word end |
+| `W` / `B` / `E` | Same as `w` / `b` / `e` with whitespace-delimited words |
+| `g g` / `g e` | Go to the start / end of the note |
+| `G` | Go to the end of the note, or to a line with a count such as `12G` |
+| `g h` / `g l` / `g s` | Go to line start / end / first nonblank character |
+| `g t` / `g c` / `g b` | Go to the top / middle / bottom of the screen |
+| `g \|` | Go to the column given by the count, such as `8g\|` |
+| `m m` | Go to the matching bracket |
+| `f<char>` / `F<char>` | Select to the next / previous occurrence of a character |
+| `t<char>` / `T<char>` | Select up to the next / previous occurrence of a character |
+| `Alt+.` | Repeat the last `f`, `F`, `t`, or `T` |
+| `Ctrl+f` / `Ctrl+b` | Move one page down / up; `PgDn` / `PgUp` work too |
+| `Ctrl+d` / `Ctrl+u` | Move half a page down / up |
+
+Counts work with movements, such as `5j` or `3w`, and `5gg` also goes to line 5.
+The page keys are Helix shortcuts while editing, so `Ctrl+f` does not open
+Ekphos's buffer-search dialog in this mode.
+
+### Selections
+
+| Key | Action |
+| --- | ------ |
+| `x` | Select the current line; repeat to add the next line |
+| `X` / `Alt+x` | Extend / shrink each selection to whole lines |
+| `%` | Select the whole note |
+| `m i<char>` / `m a<char>` | Select inside / around a text object |
+| `C` / `Alt+C` | Copy each selection to the line below / above as a new cursor |
+| `;` | Collapse each selection to its cursor |
+| `,` / `Alt+,` | Keep only the primary selection / remove the primary selection |
+| `(` / `)` | Make the previous / next selection primary |
+| `Alt+;` / `Alt+:` | Flip each selection's direction / make each selection face forward |
+| `Alt+s` | Split selections into one per line |
+| `Alt+-` / `Alt+_` | Merge all selections into one / merge touching selections |
+| `_` | Trim whitespace from both ends of each selection |
+| `&` | Align selections into a column by inserting spaces |
+
+Text objects are `w` (word), `W` (whitespace-delimited word), `p` (paragraph),
+quotes (`'`, `"`, `` ` ``), and brackets (`(` or `b`, `[`, `{` or `B`, `<`).
+
+### Multiple Selections with Regex
+
+Press `%` to select the note, then `s`, type a regex, and press `Enter` to select
+each match. `S` splits existing selections at regex matches. `K` keeps
+selections whose text matches; `Alt+K` keeps those that do not match. Regex
+commands operate within the current selections. A pattern is case-insensitive
+unless it contains an uppercase letter.
+
+For example, `%`, `s`, `TODO`, `Enter`, `c`, `DONE`, `Esc` changes every `TODO`
+in the note in one edit.
+
+### Search
+
+`/` and `?` open a regex prompt that searches forward and backward through the
+whole note, with the same case rule. Press `Enter` to select the nearest match
+in that direction, then `n` or `N` for the next or previous one. Search wraps
+around the note, and in Select mode `n` and `N` add each match as a new
+selection. `*` turns the selected text into the search pattern, matching it as
+a whole word when it is one; `Alt+*` matches it anywhere. Press `n` afterward
+to jump to a match.
+
+### View and Jumps
+
+| Key | Action |
+| --- | ------ |
+| `z z` / `z c` | Center the cursor line |
+| `z t` / `z b` | Scroll the cursor line to the top / bottom of the screen |
+| `z j` / `z k` | Scroll down / up one line |
+| `Z` | Repeat view commands without `z` until `Esc` |
+| `Ctrl+s` | Save the current selections to the jump list |
+| `Ctrl+o` / `Ctrl+i` | Jump backward / forward; `Tab` also jumps forward |
+
+`g g`, `g e`, `G`, searches, and `:<line>` also record a jump.
+
+## Change Text
+
+| Key | Action |
+| --- | ------ |
+| `d` / `c` / `y` | Delete / change / yank each selection |
+| `Alt+d` / `Alt+c` | Delete / change without yanking |
+| `p` / `P` | Paste after / before each selection |
+| `R` | Replace selections with the yanked text |
+| `r<char>` | Replace every selected character |
+| `~` / `` ` `` / ``Alt+` `` | Switch case / lowercase / uppercase |
+| `>` / `<` | Indent / outdent selected lines |
+| `J` | Join selected lines with a space |
+| `Alt+J` | Join selected lines and select the inserted spaces |
+| `Alt+(` / `Alt+)` | Rotate the contents of the selections backward / forward |
+| `m s<char>` | Surround selections with a pair |
+| `m d<char>` / `m r<char><new>` | Delete / change a surrounding pair |
+| `Space c` / `Ctrl+c` | Toggle Markdown comment markers around selections |
+| `Space y` | Copy selections to the system clipboard |
+| `Space p` / `Space P` / `Space R` | Paste after / paste before / replace from the system clipboard |
+| `Ctrl+a` / `Ctrl+x` | Increase / decrease the number at each cursor |
+| `Q` / `q` | Start or stop recording a macro / play the last macro |
+
+Counts repeat `>`, `<`, `Ctrl+a`, `Ctrl+x`, `u`, `U`, and `q`. `>` inserts a tab
+for each level and skips blank lines. Text yanked as whole lines, such as with
+`x` then `y`, pastes on its own line.
+
+Type `"` and a register name before `y`, `d`, `c`, `p`, `P`, `R`, `Q`, or `q` to
+choose a register. The `+` and `*` registers use the system clipboard. When the
+clipboard holds an image, `Ctrl+v` and pasting from the system clipboard save
+the image in the vault and insert a Markdown link to it.
+
+## Links and Notes
+
+| Key | Action |
+| --- | ------ |
+| `g f` | Open the wiki link, Markdown link, image, or URL at the primary cursor |
+| `Space f` | Open the note picker |
+| `Space /` | Open content search |
+
+Web URLs and images open without leaving the editor. Following a wiki link or a
+local Markdown link, or opening a picker, returns to the preview, so save with
+`:w` first. Ekphos shows a reminder instead when the note has unsaved edits. A
+wiki link to a missing note offers to create it.
+
+## Save and Leave
+
+| Command | Action |
+| ------- | ------ |
+| `:w` | Save and keep editing |
+| `:wq` / `:x` | Save and return to preview |
+| `:q` | Return to preview, asking about unsaved changes |
+| `:q!` | Discard changes and return to preview |
+| `:<line>` | Go to a line number |
+
+Helix keys take priority over Ekphos editor shortcuts, so use `:w` to save:
+`Ctrl+s` adds the current position to the jump list, and `Ctrl+o` / `Ctrl+i`
+move through that list.
+
+## Mouse and Paste
+
+Click to place a single cursor and drag to select. Right-click opens the context
+menu, whose Copy and Cut use the system clipboard. A terminal paste inserts at
+every cursor in Insert mode and after each selection in Normal mode.
+
+## Limitations
+
+Helix mode supports Markdown text editing, multiple selections, and the
+commands listed here. Language servers, tree-sitter selections, split windows,
+and shell commands are not part of Ekphos's Helix mode. Wiki-link
+autocomplete, `Ctrl+l` task insertion, and `Tab` heading folds are available in
+Standard and Vim editing, but not Helix editing. `F1` and `F6`, including a
+remapped `toggle_editor_mode` binding, keep working.

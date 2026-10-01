@@ -1,0 +1,156 @@
+---
+title: Callouts
+description: Titled, colored, and foldable blocks that follow Obsidian's syntax
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Callouts turn a blockquote into a titled, colored block for notes, tips,
+warnings, and other asides. Ekphos follows Obsidian's callout syntax, so
+callouts written in an Obsidian vault render the same way in the content
+preview.
+
+## Syntax
+
+Start the first line of a blockquote with `[!type]`. Every following line that
+starts with `>` belongs to the callout:
+
+```markdown
+> [!note]
+> Callouts can hold any amount of text.
+> They end at the first line that does not start with `>`.
+```
+
+The callout header line renders as an icon and a title in the callout's color,
+and every body line gets a colored bar on the left. The bar continues on
+wrapped rows, so long paragraphs read as one block.
+
+A blank line or a line without `>` ends the callout. A new `> [!type]` line
+starts a new callout.
+
+## Titles
+
+Text after the type becomes the title. Without one, the title is the type name
+in title case, so `[!tldr]` shows "Tldr":
+
+```markdown
+> [!tip] Callouts can have custom titles
+> Titles support **bold**, *italic*, and `code`.
+
+> [!warning]
+> This callout is titled "Warning".
+
+> [!info] A title with no body
+```
+
+## Types
+
+Type names are not case sensitive, so `[!WARNING]` and `[!warning]` are the
+same. Each type has an icon and takes its color from your
+[theme](/docs/themes):
+
+| Type       | Aliases                    | Icon | Theme color  |
+| ---------- | -------------------------- | ---- | ------------ |
+| `note`     |                            | ✎    | `info`       |
+| `abstract` | `summary`, `tldr`          | ≡    | `info`       |
+| `info`     |                            | ℹ    | `info`       |
+| `todo`     |                            | ☐    | `info`       |
+| `tip`      | `hint`, `important`        | ✦    | `info`       |
+| `success`  | `check`, `done`            | ✓    | `success`    |
+| `question` | `help`, `faq`              | ?    | `warning`    |
+| `warning`  | `caution`, `attention`     | ⚠    | `warning`    |
+| `failure`  | `fail`, `missing`          | ✗    | `error`      |
+| `danger`   | `error`                    | ↯    | `error`      |
+| `bug`      |                            | ✱    | `error`      |
+| `example`  |                            | ☰    | `primary`    |
+| `quote`    | `cite`                     | ❝    | `blockquote` |
+
+As in Obsidian, any type that is not listed uses the `note` style. For example,
+`[!draft]` renders with the note icon and color and the title "Draft".
+
+## Folding
+
+Add `-` directly after the type to make a callout foldable and collapsed, or `+`
+to make it foldable and expanded:
+
+```markdown
+> [!faq]- Collapsed by default
+> This body stays hidden until the callout is expanded.
+
+> [!example]+ Expanded by default
+> This body is visible, and the callout can still be folded.
+```
+
+Foldable callouts show `▸` after the title when collapsed and `▾` when expanded.
+In the content view, toggle the callout under the cursor with:
+
+| Input   | Action                                |
+| ------- | ------------------------------------- |
+| `Space` | Toggle the fold on a callout title    |
+| `za`    | Toggle the fold on a callout title    |
+| Click   | Toggle the fold by clicking the title |
+
+Callouts without `+` or `-` always stay open, as they do in Obsidian.
+
+<Callout>
+  Folding is view state and never changes the Markdown. Each callout returns to
+  its `+` or `-` default when you edit or reopen the note. Remap the keys with
+  the `content_action` and `toggle_fold` commands in
+  [`[keybindings]`](/docs/configuration#keybindings).
+</Callout>
+
+## Content Inside Callouts
+
+Callout bodies render the same inline Markdown as regular prose:
+
+```markdown
+> [!abstract] Rich body
+> Text supports **bold**, *italic*, ~~strikethrough~~, `code`, and $E = mc^2$.
+>
+> Links work: [[Another Note]], [a website](https://example.com), and
+> https://example.com.
+>
+> - Lists keep their bullets
+>     - and their nesting
+>
+> ## Headings keep their heading color
+```
+
+- A line containing only `>` separates paragraphs inside the callout.
+- Links, wiki links, and bare URLs can be selected with `]` and `[` and opened
+  with `Space`, `Enter`, or `o`, just like links in prose.
+- Inline equations render in place. See [LaTeX Math](/docs/latex).
+- Buffer search (`Ctrl+f`) finds matches in callout titles and bodies.
+
+## Nested Callouts
+
+Add another `>` for each level. A nested callout keeps its own icon and color,
+and a nested plain quote renders as a quote inside the callout:
+
+```markdown
+> [!question] Can callouts be nested?
+> > [!todo] Yes
+> > A callout can sit inside another one.
+>
+> > A plain quote can sit inside a callout too.
+```
+
+## Editing
+
+Callouts are plain Markdown, so they need no special editing commands. In
+Standard, Vim, and Helix editing, the `> [!type]` marker and its `+` or `-`
+sign are highlighted in bold with the blockquote color.
+
+## Differences from Obsidian
+
+Ekphos draws callouts in a terminal, so a few things differ from Obsidian:
+
+- Icons are terminal glyphs instead of Obsidian's icon set.
+- Colors come from your theme's semantic colors, so several types share a
+  color.
+- There is no tinted background behind the callout, only the colored bar and
+  title.
+- Code blocks, tables, and tasks inside a callout show as quoted text instead
+  of rendered blocks.
+- Inside a nested callout, the body uses quote styling instead of the inner
+  callout's color.

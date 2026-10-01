@@ -5,6 +5,7 @@
     "getting-started",
     "whats-new",
     "keybindings",
+    "helix",
     "journal",
     "search",
     "graph-view",
@@ -14,6 +15,8 @@
     "configuration",
     "markdown",
     "latex",
+    "callouts",
+    "mermaid",
     "frontmatter",
     "themes"
   ]

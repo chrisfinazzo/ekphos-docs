@@ -46,9 +46,13 @@ list.
 - **Canvas** reads and writes JSON Canvas files, with spatial navigation, inline
   card editing, move and resize controls, connection editing, and undo/redo.
 - **LaTeX math** renders `$...$` or `\(...\)` inline expressions and `$$...$$`
-  or `\[...\]` display blocks in compatible terminals. Inline math supports
-  `\displaystyle` and a separate configurable height, with readable source
-  fallback elsewhere.
+  or `\[...\]` display blocks in compatible terminals, with readable source
+  fallback elsewhere. It follows Obsidian: display equations work as list
+  items, `align` and `equation` stay unnumbered, macros defined in one equation
+  apply to the whole note, and MathJax commands such as `\label`, `\eqref`,
+  `\DeclareMathOperator`, `multline`, and `eqnarray` render instead of failing.
+  Every equation shares one scale, so `\displaystyle` and other tall expressions
+  come out larger than plain inline math.
 - **Frontmatter templates** apply folder-aware YAML fragments and the
   `{{title}}`, `{{date}}`, and `{{folder}}` variables when creating notes.
 

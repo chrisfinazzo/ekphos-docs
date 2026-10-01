@@ -5,15 +5,15 @@ description: Complete keyboard reference for ekphos
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-Ekphos uses Vim-style navigation in the preview and offers both Standard and
-Vim editing. Press `?` in the preview or `F1` while editing to open the help
+Ekphos uses Vim-style navigation in the preview and offers Standard, Vim, and
+Helix editing. Press `?` in the preview or `F1` while editing to open the help
 dialog. The tables below show the default bindings.
 
 <Callout>
   Main Normal-view commands and the shared editor shortcuts below can be
   remapped, given secondary bindings, or disabled in the [`[keybindings]`
-  configuration table](/docs/configuration#keybindings). Other editor Vim
-  commands and controls inside dialogs, search inputs, and Graph View remain
+  configuration table](/docs/configuration#keybindings). Other Vim and Helix
+  editor commands and controls inside dialogs, search inputs, and Graph View remain
   fixed.
 </Callout>
 
@@ -40,7 +40,7 @@ dialog. The tables below show the default bindings.
 | `Ctrl+y`           | Open task view                                |
 | `Ctrl+z`           | Toggle zen mode (hide both panels)            |
 | `Ctrl+m`           | Toggle frontmatter visibility (Content panel) |
-| `F6`               | Switch between Standard and Vim editing       |
+| `F6`               | Choose Standard, Vim, or Helix editing         |
 | `R`                | Reload files                                  |
 | `Ctrl+Shift+R`     | Reload config and theme                       |
 
@@ -114,6 +114,32 @@ Open a Local graph for the active note with `Ctrl+g` by default. See [Graph View
 | `r`                    | Reset graph controls                   |
 | `?`                    | Show graph help                        |
 | `Esc` / `q`            | Close Graph View                       |
+
+## Diagram Viewer
+
+Press `Enter`, `Space`, or `o` on a Mermaid diagram in the content view, or click
+it, to open it full screen. See [Mermaid Diagrams](/docs/mermaid) for syntax,
+looks, and terminal support.
+
+| Key                                 | Action                                  |
+| ----------------------------------- | --------------------------------------- |
+| `+` / `=` / `i`                     | Zoom in                                 |
+| `-` / `_` / `o`                     | Zoom out                                |
+| Scroll wheel                        | Zoom toward the pointer                 |
+| Double-click                        | Zoom in 2x at the pointer               |
+| `h` / `j` / `k` / `l`, arrow keys   | Pan                                     |
+| `H` / `J` / `K` / `L`, Shift+arrows | Pan half a screen                       |
+| Drag                                | Pan with the mouse                      |
+| `g` / `G`                           | Jump to the top or bottom               |
+| `f` / `0`                           | Fit the diagram to the window           |
+| `1`                                 | Show the diagram at actual size         |
+| `t`                                 | Cycle the look: note theme, light, dark |
+| `]` / `n` / `Tab`                   | Next diagram in the note                |
+| `[` / `N` / `Shift+Tab`             | Previous diagram in the note            |
+| `e`                                 | Edit the diagram's source               |
+| `y`                                 | Copy the diagram's source               |
+| `?`                                 | Show or hide the controls               |
+| `Esc` / `q`                         | Close the viewer                        |
 
 ## Task View
 
@@ -254,9 +280,9 @@ Press `s` to cycle through sorting options. The current mode is displayed in the
 | `Ctrl+d` / `Ctrl+u`   | Half page down/up                                 |
 | `gg`                  | Go to top                                         |
 | `G`                   | Go to bottom                                      |
-| `Space`               | Toggle checkbox / Open selected target / Toggle details |
+| `Space`               | Toggle checkbox / Open selected target / Toggle details or callout fold / Open diagram viewer |
 | `]` / `[`             | Navigate links, inline images, and checkbox       |
-| `Enter` / `o`         | Open selected link or image                       |
+| `Enter` / `o`         | Open selected link, image, or diagram             |
 | `Shift+J` / `Shift+K` | Toggle floating cursor mode                       |
 
 <Callout>
@@ -311,8 +337,8 @@ inline image gets its own highlighted border and **Open ↗** title.
 
 New installations use Standard editing. Existing configurations without an
 explicit [`editor.mode`](/docs/configuration#editing-modes) keep Vim behavior
-for compatibility. Press `F6` in the preview or editor to switch immediately
-and save the preference.
+for compatibility. Press `F6` in the preview or editor to choose a mode and
+save the preference. In the Canvas view, `F6` edits the selected node.
 
 ### Standard Editing
 
@@ -338,7 +364,7 @@ arrow keys move the caret, and holding Shift extends the selection.
 | `Ctrl+s` / `Ctrl+o`                      | Save and keep editing                       |
 | `Esc`                                    | Return to preview; confirm first if unsaved |
 | `F1`                                     | Show help                                   |
-| `F6`                                     | Switch to Vim editing                       |
+| `F6`                                     | Choose an editing mode                     |
 
 Terminal emulators may reserve clipboard shortcuts. Terminal paste events and
 the editor's right-click context menu remain available when that happens.
@@ -346,7 +372,7 @@ the editor's right-click context menu remain available when that happens.
 ### Shared Editor Shortcuts
 
 These shortcuts work in Standard editing and in Vim Normal, Insert, and Replace
-modes:
+modes. Helix editing does not use them:
 
 | Key      | Action                                                    |
 | -------- | --------------------------------------------------------- |
@@ -373,6 +399,14 @@ editing session.
 
 In Vim Normal mode, `za` also toggles the current heading, `zM` folds every
 H1-H3 section, and `zR` unfolds every section.
+
+### Helix Editing
+
+Helix mode uses selections as cursors. Press `i` or `a` to insert, `v` to extend
+selections, `C` to add a cursor below, and `%` then `s` to select regex matches
+across the note. Use `:w` to save: `Ctrl+s` adds the current position to the
+jump list in this mode. See the [Helix editing guide](/docs/helix) for the full
+key reference, save commands, and feature scope.
 
 ## Vim Mode - Normal
 
@@ -686,7 +720,10 @@ Press `/` in the sidebar to search notes by filename.
 
 ## Buffer Search
 
-Press `Ctrl+f` to search within the current note (works in both Normal and Edit modes). In Edit mode, you can also use vim-style `/` (forward) or `?` (backward) to start a search.
+Press `Ctrl+f` to search within the current note from the preview or Standard
+and Vim editing. In Vim editing, `/` (forward) and `?` (backward) also start a
+search. Helix editing has its own [regex search](/docs/helix#search) on `/` and
+`?`, and uses `Ctrl+f` for page-down movement.
 
 | Key                              | Action                     |
 | -------------------------------- | -------------------------- |
@@ -696,7 +733,7 @@ Press `Ctrl+f` to search within the current note (works in both Normal and Edit 
 | `Ctrl+c`                         | Toggle case sensitivity    |
 | `Esc`                            | Close search               |
 
-After closing the search dialog, use `n` and `N` in Edit mode to continue navigating through matches.
+After closing the search dialog, use `n` and `N` in Vim editing to continue navigating through matches.
 
 **Features**:
 
